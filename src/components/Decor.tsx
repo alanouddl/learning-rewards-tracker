@@ -25,14 +25,14 @@ export function Sparkle({ className = '', color = '#f9a8c7' }: { className?: str
   );
 }
 
-/** Soft floating decorations for the page header. */
+/** Soft sparkles around the header logo. */
 export function HeaderDecor() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-      <Flower className="absolute -left-4 -top-5 h-12 w-12 animate-floaty opacity-30" />
-      <Sparkle className="absolute left-1/2 top-3 h-3 w-3 animate-twinkle" color="#c6b3f7" />
-      <Star className="absolute right-1/3 top-2 h-3.5 w-3.5 animate-twinkle [animation-delay:.8s]" color="#9dcdf4" />
-      <Flower className="absolute -bottom-5 left-1/3 h-9 w-9 animate-floaty opacity-30 [animation-delay:1.2s]" color="#c6b3f7" />
+      <Sparkle className="absolute left-[18%] top-5 h-3 w-3 animate-twinkle" color="#f6a3c0" />
+      <Star className="absolute right-[20%] top-4 h-3 w-3 animate-twinkle [animation-delay:.8s]" color="#f2c46b" />
+      <Sparkle className="absolute bottom-3 right-[30%] h-2.5 w-2.5 animate-twinkle [animation-delay:1.4s]" color="#f2c46b" />
+      <Star className="absolute bottom-4 left-[28%] h-2.5 w-2.5 animate-twinkle [animation-delay:.4s]" color="#fbc7da" />
     </div>
   );
 }

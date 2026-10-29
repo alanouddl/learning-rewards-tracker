@@ -7,10 +7,10 @@ export function Card({ children, className = '' }: { children: ReactNode; classN
 
 export function ProgressBar({ value, tone = 'pink', height = 'h-3' }: { value: number; tone?: 'pink' | 'blue' | 'mint' | 'lav'; height?: string }) {
   const grad = {
-    pink: 'from-blush-300 via-blush-400 to-lav-400',
-    blue: 'from-sky-300 to-lav-400',
+    pink: 'from-gold-300 via-blush-300 to-blush-500',
+    blue: 'from-blush-200 to-blush-400',
     mint: 'from-mint-300 to-sky-300',
-    lav: 'from-lav-300 to-lav-500',
+    lav: 'from-blush-300 to-lav-500',
   }[tone];
   const v = Math.max(0, Math.min(100, value));
   return (
@@ -27,10 +27,10 @@ export function Ring({ value, size = 112, stroke = 12, children }: { value: numb
       <svg width={size} height={size} className="-rotate-90">
         <defs>
           <linearGradient id="ringGrad" x1="0" x2="1" y1="0" y2="1">
-            <stop offset="0%" stopColor="#f9a8c7" /><stop offset="100%" stopColor="#8b6fe0" />
+            <stop offset="0%" stopColor="#f2c46b" /><stop offset="100%" stopColor="#e05f8e" />
           </linearGradient>
         </defs>
-        <circle cx={size / 2} cy={size / 2} r={r} stroke="#ece4ff" strokeWidth={stroke} fill="none" />
+        <circle cx={size / 2} cy={size / 2} r={r} stroke="#fde2ec" strokeWidth={stroke} fill="none" />
         <circle cx={size / 2} cy={size / 2} r={r} stroke="url(#ringGrad)" strokeWidth={stroke} fill="none" strokeLinecap="round"
           strokeDasharray={c} strokeDashoffset={c - (c * v) / 100} style={{ transition: 'stroke-dashoffset 1s ease-out' }} />
       </svg>
@@ -84,7 +84,7 @@ export function Empty({ emoji = '🌸', text }: { emoji?: string; text: string }
 }
 
 export function Stat({ label, value, sub, emoji, tone = 'lav' }: { label: string; value: ReactNode; sub?: ReactNode; emoji?: string; tone?: 'lav' | 'pink' | 'blue' | 'mint' | 'cream' }) {
-  const bg = { lav: 'bg-lav-50', pink: 'bg-blush-50', blue: 'bg-sky-50', mint: 'bg-mint-100/60', cream: 'bg-cream-100' }[tone];
+  const bg = { lav: 'bg-blush-50', pink: 'bg-blush-100', blue: 'bg-sky-50', mint: 'bg-mint-100/60', cream: 'bg-gold-100/60' }[tone];
   return (
     <div className={`rounded-2xl ${bg} p-3`}>
       <div className="flex items-center gap-1.5 text-xs font-semibold text-plum-soft">{emoji && <span>{emoji}</span>}{label}</div>

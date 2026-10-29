@@ -54,10 +54,10 @@ export function StudyTimer({ courseId, targetMinutes, onFinish }: { courseId: st
     <div className="flex flex-col items-center gap-4">
       <div className="relative grid h-44 w-44 place-items-center">
         <svg viewBox="0 0 100 100" className="absolute inset-0 -rotate-90">
-          <circle cx="50" cy="50" r="44" stroke="#ece4ff" strokeWidth="7" fill="none" />
+          <circle cx="50" cy="50" r="44" stroke="#fde2ec" strokeWidth="7" fill="none" />
           <circle cx="50" cy="50" r="44" stroke="url(#tg)" strokeWidth="7" fill="none" strokeLinecap="round"
             strokeDasharray={276.5} strokeDashoffset={276.5 - (276.5 * pct) / 100} style={{ transition: 'stroke-dashoffset .9s linear' }} />
-          <defs><linearGradient id="tg"><stop offset="0" stopColor="#9dcdf4" /><stop offset="1" stopColor="#f27ea9" /></linearGradient></defs>
+          <defs><linearGradient id="tg"><stop offset="0" stopColor="#f2c46b" /><stop offset="1" stopColor="#e05f8e" /></linearGradient></defs>
         </svg>
         <div className="text-center">
           <div className="ltr font-display text-4xl font-bold tabular-nums" aria-live="off">{clock(secs)}</div>

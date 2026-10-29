@@ -4,21 +4,24 @@ export default {
   theme: {
     extend: {
       colors: {
-        plum: { DEFAULT: '#3f2d62', soft: '#6b5a8e', faint: '#9a8cb6' },
-        lav: { 50: '#f6f2ff', 100: '#ece4ff', 200: '#ddd0fd', 300: '#c6b3f7', 400: '#a88ef0', 500: '#8b6fe0', 600: '#7358c7' },
-        blush: { 50: '#fff3f7', 100: '#ffe4ee', 200: '#fdcade', 300: '#f9a8c7', 400: '#f27ea9', 500: '#e45d90' },
-        sky: { 50: '#f1f8ff', 100: '#e0f0fd', 200: '#c4e2fa', 300: '#9dcdf4', 400: '#6fb2ea' },
-        cream: { 50: '#fffdf8', 100: '#fff8ec', 200: '#fdefd6' },
-        mint: { 100: '#dcf5ea', 300: '#9adcbf', 500: '#3fae83' },
-        peach: { 100: '#ffe9dc', 300: '#ffc3a1' },
+        // "Candy Wishes" palette: pink everywhere, mustard-gold accents, white cards
+        plum: { DEFAULT: '#5b2440', soft: '#8a4d68', faint: '#b8899d' },
+        lav: { 50: '#fff4f7', 100: '#fde6ee', 200: '#f9cfdd', 300: '#f3aec5', 400: '#ea89aa', 500: '#dc6690', 600: '#c24a77' },
+        blush: { 50: '#fff3f7', 100: '#fde2ec', 200: '#fbc7da', 300: '#f6a3c0', 400: '#ef7fa7', 500: '#e05f8e' },
+        sky: { 50: '#fff8ee', 100: '#fdefd9', 200: '#f8deb3', 300: '#f2c780', 400: '#d99a2b' },
+        gold: { 100: '#fbecc9', 300: '#f2c46b', 400: '#e5a634', 500: '#c9861f', 600: '#a86d17' },
+        cream: { 50: '#fffbfc', 100: '#fff4f6', 200: '#fde8ee' },
+        mint: { 100: '#e3f5ec', 300: '#a5dcc1', 500: '#3c9d74' },
+        peach: { 100: '#ffeadf', 300: '#ffc4a3' },
       },
       fontFamily: {
         sans: ['"IBM Plex Sans Arabic"', 'system-ui', 'sans-serif'],
-        display: ['"El Messiri"', '"IBM Plex Sans Arabic"', 'serif'],
+        display: ['"Playfair Display"', '"El Messiri"', '"IBM Plex Sans Arabic"', 'serif'],
+        script: ['"Aref Ruqaa"', '"El Messiri"', 'serif'],
       },
       boxShadow: {
-        soft: '0 10px 30px -12px rgba(115, 88, 199, 0.25)',
-        glow: '0 8px 24px -6px rgba(228, 93, 144, 0.45)',
+        soft: '0 12px 32px -14px rgba(194, 74, 119, 0.35)',
+        glow: '0 8px 20px -8px rgba(212, 146, 42, 0.6)',
       },
       keyframes: {
         floaty: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-6px)' } },

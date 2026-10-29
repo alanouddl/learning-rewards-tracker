@@ -29,20 +29,22 @@ export default function StudentRewards() {
   return (
     <>
       <MoneyCelebration />
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-lav-100 via-blush-50 to-sky-100 p-5 shadow-soft animate-rise">
-        <Star className="absolute left-6 top-6 h-5 w-5 animate-twinkle" color="#fff" />
-        <Sparkle className="absolute bottom-8 right-1/2 h-4 w-4 animate-twinkle [animation-delay:1s]" />
-        <h1 className="text-center text-2xl font-bold sm:text-3xl">رحلتك لجهاز أحلامك 💻✨</h1>
+      <section className="relative isolate overflow-hidden rounded-3xl bg-blush-100 p-5 shadow-soft animate-rise">
+        <div className="pointer-events-none absolute -bottom-20 -right-10 -z-10 h-56 w-56 rounded-full bg-blush-200/70" aria-hidden="true" />
+        <Star className="absolute left-6 top-6 h-5 w-5 animate-twinkle" color="#f2c46b" />
+        <Sparkle className="absolute bottom-8 right-1/2 h-4 w-4 animate-twinkle [animation-delay:1s]" color="#fff" />
+        <p className="relative text-center eyebrow">MY DREAM DEVICE</p>
+        <h1 className="relative mt-1 text-center"><span className="script text-3xl sm:text-4xl">رحلتك لجهاز أحلامك</span> <span className="text-2xl">💻✨</span></h1>
         <div className="mt-4 flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-10">
           <div className="animate-floaty"><SavingsJar value={s.earned / s.total_budget} pending={s.pending / s.total_budget} size={170} /></div>
           <div className="w-full max-w-xs space-y-3 text-center sm:text-right">
             <div>
               <div className="text-sm text-plum-soft">جمعتِ</div>
-              <div className="font-display text-4xl font-bold">{sar(s.earned)}</div>
+              <div className="font-display text-4xl font-bold text-lav-600">{sar(s.earned)}</div>
               <div className="text-sm text-plum-soft">من {sar(s.total_budget)}</div>
             </div>
             <ProgressBar value={pct(s.earned, s.total_budget)} height="h-4" />
-            <div className="rounded-2xl bg-white/70 p-3 text-sm">
+            <div className="rounded-2xl bg-white p-3 text-sm shadow-soft">
               ⏳ باقي <b>{sar(remaining)}</b> وتوصلين للهدف!
               {nextThreshold && <div className="mt-1 text-xs text-plum-soft">الإنجاز القادم: {nextThreshold} ريال (باقي {sar(nextThreshold - s.earned)})</div>}
             </div>

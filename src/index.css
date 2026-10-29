@@ -4,6 +4,9 @@
 @import '@fontsource/ibm-plex-sans-arabic/700.css';
 @import '@fontsource/el-messiri/600.css';
 @import '@fontsource/el-messiri/700.css';
+@import '@fontsource/aref-ruqaa/400.css';
+@import '@fontsource/aref-ruqaa/700.css';
+@import '@fontsource/playfair-display/700.css';
 
 @tailwind base;
 @tailwind components;
@@ -13,11 +16,16 @@
   html, body { -webkit-tap-highlight-color: transparent; overflow-x: clip; max-width: 100%; }
   body {
     @apply font-sans text-plum antialiased;
+    /* pink backdrop with soft waves and tiny white stars, like the template */
     background:
-      radial-gradient(1200px 600px at 100% -10%, #ffe4ee 0%, transparent 60%),
-      radial-gradient(900px 500px at -10% 10%, #e0f0fd 0%, transparent 55%),
-      radial-gradient(900px 700px at 50% 120%, #ece4ff 0%, transparent 60%),
-      #fffdf8;
+      radial-gradient(circle at 12% 18%, rgba(255,255,255,.9) 0 1.5px, transparent 2.5px),
+      radial-gradient(circle at 78% 9%, rgba(255,255,255,.9) 0 1.5px, transparent 2.5px),
+      radial-gradient(circle at 92% 46%, rgba(255,255,255,.8) 0 1px, transparent 2px),
+      radial-gradient(circle at 6% 64%, rgba(255,255,255,.8) 0 1px, transparent 2px),
+      radial-gradient(1100px 520px at 110% 105%, #ef8fb1 0%, transparent 60%),
+      radial-gradient(900px 480px at -15% 115%, #f4a6c1 0%, transparent 55%),
+      linear-gradient(180deg, #f9cddd 0%, #f6bdd1 100%);
+    background-size: 220px 220px, 260px 260px, 300px 300px, 240px 240px, auto, auto, auto;
     background-attachment: fixed;
     min-height: 100vh;
   }
@@ -29,10 +37,10 @@
 }
 
 @layer components {
-  .card { @apply min-w-0 rounded-3xl bg-white/80 backdrop-blur border border-white shadow-soft p-4 sm:p-5; }
+  .card { @apply min-w-0 rounded-3xl bg-white border border-white shadow-soft p-4 sm:p-5; }
   .btn { @apply inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-2.5 font-semibold transition active:scale-[.97] disabled:opacity-50 disabled:pointer-events-none; }
-  .btn-primary { @apply btn text-white bg-gradient-to-l from-blush-400 to-lav-500 shadow-glow hover:brightness-105; }
-  .btn-soft { @apply btn bg-lav-100 text-lav-600 hover:bg-lav-200; }
+  .btn-primary { @apply btn rounded-xl text-white bg-gold-500 font-bold shadow-glow tracking-wide hover:bg-gold-600; }
+  .btn-soft { @apply btn bg-blush-100 text-lav-600 hover:bg-blush-200; }
   .btn-ghost { @apply btn bg-transparent text-plum-soft hover:bg-lav-50; }
   .btn-danger { @apply btn bg-blush-100 text-blush-500 hover:bg-blush-200; }
   .btn-mint { @apply btn bg-mint-100 text-mint-500 hover:bg-mint-300/50; }
@@ -40,6 +48,8 @@
   .label { @apply mb-1 block text-sm font-semibold text-plum-soft; }
   .chip { @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold; }
   .section-title { @apply font-display text-lg font-bold text-plum flex items-center gap-2; }
+  .script { @apply font-script text-blush-500; }
+  .eyebrow { @apply text-[11px] font-semibold uppercase tracking-[0.25em] text-gold-500; }
 }
 
 @media (prefers-reduced-motion: reduce) {

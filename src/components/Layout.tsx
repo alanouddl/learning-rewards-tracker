@@ -28,40 +28,44 @@ export function Layout({ children }: { children: ReactNode }) {
   const nav = d.me.role === 'guardian' ? GUARDIAN_NAV : STUDENT_NAV;
   const pendingReview = d.checkins.filter((c) => c.status === 'pending').length + d.rewards.filter((r) => r.status === 'pending').length;
   return (
-    <div className="mx-auto flex min-h-screen max-w-5xl flex-col px-4 pb-28 pt-4 sm:pb-10">
-      <header className="relative mb-4 flex items-center justify-between gap-3 rounded-3xl bg-white/60 px-4 py-3 shadow-soft backdrop-blur">
-        <HeaderDecor />
-        <div className="relative flex items-center gap-2">
-          <span className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-blush-200 to-lav-200 text-xl">{d.me.role === 'guardian' ? '🛡️' : '🌷'}</span>
-          <div>
-            <div className="font-display text-lg font-bold leading-tight">رحلتي</div>
-            <div className="text-xs text-plum-soft">{d.me.role === 'guardian' ? 'لوحة ولي الأمر' : d.me.display_name}</div>
+    <div className="mx-auto flex min-h-screen max-w-5xl flex-col px-3 pb-28 pt-3 sm:px-4 sm:pb-10">
+      <div className="overflow-hidden rounded-[28px] bg-white shadow-soft">
+        {/* announcement bar */}
+        <div className="flex items-center justify-between gap-2 bg-blush-100 px-4 py-2">
+          <span className="text-gold-500" aria-hidden="true">✦ ✧</span>
+          <p className="truncate text-center text-[11px] font-semibold tracking-[0.2em] text-lav-600">
+            {d.me.role === 'guardian' ? 'لوحة ولي الأمر — خاصة ومحمية 🔒' : 'خطوة صغيرة كل يوم ✨ حلمك يقرب'}
+          </p>
+          <div className="flex items-center gap-0.5">
+            <Bell />
+            {d.me.role === 'guardian' && <NavLink to="/g/settings" className="btn-ghost !px-2 !py-1" aria-label="الإعدادات">⚙️</NavLink>}
+            <button className="btn-ghost !px-2 !py-1 text-xs" onClick={() => supabase.auth.signOut()}>خروج</button>
           </div>
         </div>
-        <div className="relative flex items-center gap-1">
-          <Bell />
-          {d.me.role === 'guardian' && (
-            <NavLink to="/g/settings" className="btn-ghost !px-2.5" aria-label="الإعدادات">⚙️</NavLink>
-          )}
-          <button className="btn-ghost !px-2.5 text-sm" onClick={() => supabase.auth.signOut()}>خروج</button>
-        </div>
-      </header>
 
-      {/* desktop nav */}
-      <nav className="mb-5 hidden gap-1 rounded-2xl bg-white/60 p-1.5 shadow-soft backdrop-blur sm:flex">
-        {nav.map((n) => (
-          <NavLink key={n.to} to={n.to} end={n.to === '/' || n.to === '/g'}
-            className={({ isActive }) => `flex flex-1 items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-sm font-semibold transition ${isActive ? 'bg-gradient-to-l from-blush-100 to-lav-100 text-lav-600' : 'text-plum-soft hover:bg-lav-50'}`}>
-            <span>{n.icon}</span>{n.label}
-            {n.to === '/g/review' && pendingReview > 0 && <span className="chip bg-blush-400 text-white">{pendingReview}</span>}
-          </NavLink>
-        ))}
-      </nav>
+        {/* centred two-tone logo */}
+        <header className="relative px-4 pb-3 pt-4 text-center">
+          <HeaderDecor />
+          <Logo />
+          <div className="mt-1 eyebrow">{d.me.role === 'guardian' ? 'GUARDIAN · ولي الأمر' : `LEARN · GROW · SHINE — ${d.me.display_name}`}</div>
+        </header>
 
-      <main className="flex-1 space-y-4">{children}</main>
+        {/* desktop nav strip */}
+        <nav className="hidden justify-center gap-1 border-t border-blush-100 bg-blush-50 px-2 sm:flex">
+          {nav.map((n) => (
+            <NavLink key={n.to} to={n.to} end={n.to === '/' || n.to === '/g'}
+              className={({ isActive }) => `relative flex items-center gap-1.5 px-4 py-3 text-xs font-semibold tracking-[0.18em] transition ${isActive ? 'text-lav-600 after:absolute after:inset-x-4 after:bottom-0 after:h-[3px] after:rounded-full after:bg-gold-400' : 'text-plum-soft hover:text-lav-600'}`}>
+              {n.label}
+              {n.to === '/g/review' && pendingReview > 0 && <span className="chip bg-gold-500 text-white">{pendingReview}</span>}
+            </NavLink>
+          ))}
+        </nav>
+      </div>
+
+      <main className="mt-4 flex-1 space-y-4">{children}</main>
 
       {/* mobile bottom nav */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-white bg-white/85 px-2 pb-[max(env(safe-area-inset-bottom),8px)] pt-1.5 shadow-[0_-8px_30px_-12px_rgba(115,88,199,.3)] backdrop-blur sm:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-blush-100 bg-white/95 px-2 pb-[max(env(safe-area-inset-bottom),8px)] pt-1.5 shadow-[0_-8px_30px_-12px_rgba(194,74,119,.35)] backdrop-blur sm:hidden">
         <div className="mx-auto flex max-w-md justify-between">
           {nav.map((n) => (
             <NavLink key={n.to} to={n.to} end={n.to === '/' || n.to === '/g'}
@@ -69,12 +73,32 @@ export function Layout({ children }: { children: ReactNode }) {
               {({ isActive }) => (<>
                 <span className={`text-xl transition ${isActive ? 'scale-110' : 'grayscale-[40%]'}`}>{n.icon}</span>
                 <span className="truncate">{n.label}</span>
-                {n.to === '/g/review' && pendingReview > 0 && <span className="absolute right-2 top-0 h-2.5 w-2.5 rounded-full bg-blush-400" />}
+                {isActive && <span className="mt-0.5 h-1 w-5 rounded-full bg-gold-400" />}
+                {n.to === '/g/review' && pendingReview > 0 && <span className="absolute right-2 top-0 h-2.5 w-2.5 rounded-full bg-gold-500" />}
               </>)}
             </NavLink>
           ))}
         </div>
       </nav>
+    </div>
+  );
+}
+
+/** "Candy Wishes"-style logo: two-tone script word with a little sun-burst. */
+export function Logo({ size = 'text-5xl' }: { size?: string }) {
+  return (
+    <div className="relative inline-flex items-center justify-center">
+      <svg viewBox="0 0 40 40" className="absolute -left-7 -top-3 h-9 w-9 text-gold-400" aria-hidden="true">
+        {Array.from({ length: 9 }, (_, i) => {
+          const a = (-150 + i * 15) * (Math.PI / 180);
+          return <line key={i} x1={20 + Math.cos(a) * 9} y1={30 + Math.sin(a) * 9} x2={20 + Math.cos(a) * 17} y2={30 + Math.sin(a) * 17} stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />;
+        })}
+      </svg>
+      {/* one connected word (Arabic letters must stay joined), shaded pink → gold */}
+      <span className={`font-script ${size} bg-gradient-to-l from-blush-500 via-blush-400 to-gold-400 bg-clip-text pb-2 font-bold leading-tight text-transparent`}>
+        رحلتي
+      </span>
+      <span className="absolute -right-5 top-0 text-sm text-gold-400" aria-hidden="true">✦</span>
     </div>
   );
 }

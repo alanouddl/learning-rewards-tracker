@@ -8,7 +8,7 @@ export const STATE_STYLE: Record<DayState, { bg: string; icon: string; label: st
   partial: { bg: 'bg-peach-100 border-peach-300', icon: '🌤️', label: 'جزئي' },
   missed: { bg: 'bg-blush-50 border-blush-200', icon: '🌙', label: 'فاتك' },
   rescheduled: { bg: 'bg-sky-50 border-sky-200', icon: '📅', label: 'تم تعويضه' },
-  today: { bg: 'bg-white border-blush-300 ring-4 ring-blush-100', icon: '✨', label: 'اليوم' },
+  today: { bg: 'bg-white border-gold-400 ring-4 ring-gold-100', icon: '✨', label: 'اليوم' },
   upcoming: { bg: 'bg-white/70 border-lav-100', icon: '🗓️', label: 'قادم' },
   rest: { bg: 'bg-cream-100 border-cream-200', icon: '🌸', label: 'راحة' },
   before: { bg: 'bg-white/50 border-lav-50', icon: '·', label: 'قبل البداية' },

@@ -54,14 +54,20 @@ export default function StudentToday() {
     <>
       <MoneyCelebration />
       {/* greeting */}
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-l from-blush-100 via-lav-100 to-sky-100 p-5 shadow-soft animate-rise">
-        <Flower className="absolute -left-4 -top-4 h-24 w-24 opacity-60 animate-floaty" color="#fdcade" />
-        <Sparkle className="absolute left-24 top-6 h-5 w-5 animate-twinkle" color="#fff" />
-        <p className="text-sm text-plum-soft">{fmtDate(today, { weekday: 'long', day: 'numeric', month: 'long' })}</p>
-        <h1 className="mt-1 text-2xl font-bold sm:text-3xl">{greeting()} يا بطلة! 🌷</h1>
-        <p className="mt-2 text-plum-soft">{motivationFor(today)}</p>
+      <section className="relative isolate overflow-hidden rounded-3xl bg-blush-100 px-5 py-7 text-center shadow-soft animate-rise">
+        <div className="pointer-events-none absolute -bottom-16 -left-10 -z-10 h-48 w-48 rounded-full bg-blush-200/70" aria-hidden="true" />
+        <div className="pointer-events-none absolute -right-12 -top-14 -z-10 h-40 w-40 rounded-full bg-white/60" aria-hidden="true" />
+        <Flower className="absolute left-4 top-4 h-10 w-10 opacity-60 animate-floaty" color="#fbc7da" />
+        <Sparkle className="absolute right-8 top-6 h-4 w-4 animate-twinkle" color="#f2c46b" />
+        <Sparkle className="absolute bottom-6 left-1/3 h-3 w-3 animate-twinkle [animation-delay:1s]" color="#fff" />
+        <p className="relative eyebrow">{fmtDate(today, { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+        <h1 className="relative mt-2 leading-tight">
+          <span className="script block text-4xl sm:text-5xl">{greeting()}</span>
+          <span className="mt-1 block font-display text-3xl font-bold text-plum sm:text-4xl">يا بطلة! 🌷</span>
+        </h1>
+        <p className="relative mt-3 text-sm font-semibold tracking-wide text-gold-600">{motivationFor(today)}</p>
         {d.settings.guardian_message && (
-          <p className="mt-3 inline-block rounded-2xl bg-white/70 px-3 py-1.5 text-sm">💌 {d.settings.guardian_message}</p>
+          <p className="relative mt-4 inline-block rounded-2xl bg-white px-4 py-2 text-sm shadow-soft">💌 {d.settings.guardian_message}</p>
         )}
       </section>
 

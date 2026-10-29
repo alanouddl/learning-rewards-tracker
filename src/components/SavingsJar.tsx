@@ -15,21 +15,21 @@ export function SavingsJar({ value, pending = 0, size = 180 }: { value: number; 
           <path d="M40 40 h80 q12 0 12 14 v4 q16 10 16 34 v86 q0 18 -18 18 h-100 q-18 0 -18 -18 v-86 q0 -24 16 -34 v-4 q0 -14 12 -14z" />
         </clipPath>
         <linearGradient id={`liq-${id}`} x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor="#f9a8c7" />
-          <stop offset="100%" stopColor="#a88ef0" />
+          <stop offset="0%" stopColor="#f6a3c0" />
+          <stop offset="100%" stopColor="#e05f8e" />
         </linearGradient>
         <pattern id={`dots-${id}`} width="18" height="18" patternUnits="userSpaceOnUse">
-          <circle cx="5" cy="6" r="3" fill="#fff8ec" opacity=".55" />
+          <circle cx="5" cy="6" r="3" fill="#fbecc9" opacity=".75" />
           <circle cx="14" cy="14" r="2" fill="#fff" opacity=".4" />
         </pattern>
       </defs>
       {/* lid */}
-      <rect x="34" y="18" width="92" height="22" rx="9" fill="#c6b3f7" />
-      <rect x="44" y="12" width="72" height="10" rx="5" fill="#ddd0fd" />
+      <rect x="34" y="18" width="92" height="22" rx="9" fill="#e5a634" />
+      <rect x="44" y="12" width="72" height="10" rx="5" fill="#f2c46b" />
       <g clipPath={`url(#jar-${id})`}>
-        <rect x="0" y="0" width="160" height="210" fill="#f6f2ff" />
+        <rect x="0" y="0" width="160" height="210" fill="#fff4f7" />
         {/* pending (lighter) */}
-        <rect x="0" y={yp} width="160" height={bottom - yp + 20} fill="#fdcade" opacity=".55" style={{ transition: 'y 1.2s ease-out' }} />
+        <rect x="0" y={yp} width="160" height={bottom - yp + 20} fill="#f2c46b" opacity=".45" style={{ transition: 'y 1.2s ease-out' }} />
         {/* approved */}
         <g style={{ transform: `translateY(${y}px)`, transition: 'transform 1.4s cubic-bezier(.2,.8,.2,1)' }}>
           <g className="animate-wave">
@@ -40,7 +40,7 @@ export function SavingsJar({ value, pending = 0, size = 180 }: { value: number; 
       </g>
       {/* glass outline & shine */}
       <path d="M40 40 h80 q12 0 12 14 v4 q16 10 16 34 v86 q0 18 -18 18 h-100 q-18 0 -18 -18 v-86 q0 -24 16 -34 v-4 q0 -14 12 -14z"
-        fill="none" stroke="#ddd0fd" strokeWidth="4" />
+        fill="none" stroke="#fbc7da" strokeWidth="4" />
       <path d="M30 100 q0 -18 10 -26" stroke="#fff" strokeWidth="6" strokeLinecap="round" fill="none" opacity=".8" />
       <path d="M28 120 v40" stroke="#fff" strokeWidth="6" strokeLinecap="round" opacity=".6" />
       {/* heart label */}

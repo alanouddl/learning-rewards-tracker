@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { friendlyError, supabase, toLoginEmail } from '../lib/supabase';
 import { Flower, Sparkle, Star } from '../components/Decor';
+import { Logo } from '../components/Layout';
 
 export default function Login() {
   const [user, setUser] = useState('');
@@ -20,14 +21,14 @@ export default function Login() {
     <div className="grid min-h-screen place-items-center px-4 py-10">
       <div className="relative w-full max-w-sm">
         <Flower className="absolute -right-6 -top-8 h-20 w-20 animate-floaty" />
-        <Flower className="absolute -bottom-6 -left-4 h-14 w-14 animate-floaty [animation-delay:1s]" color="#c6b3f7" />
-        <Star className="absolute -top-4 left-10 h-5 w-5 animate-twinkle" color="#9dcdf4" />
+        <Flower className="absolute -bottom-6 -left-4 h-14 w-14 animate-floaty [animation-delay:1s]" color="#f2c46b" center="#fff4f7" />
+        <Star className="absolute -top-4 left-10 h-5 w-5 animate-twinkle" color="#fff" />
         <Sparkle className="absolute right-8 top-24 h-4 w-4 animate-twinkle [animation-delay:.6s]" />
         <form onSubmit={submit} className="card relative space-y-4 !p-6">
           <div className="text-center">
-            <div className="mx-auto grid h-16 w-16 place-items-center rounded-3xl bg-gradient-to-br from-blush-200 to-lav-200 text-3xl shadow-glow">🌷</div>
-            <h1 className="mt-3 text-3xl font-bold">رحلتي</h1>
-            <p className="text-sm text-plum-soft">خطوة كل يوم نحو حلمك ✨</p>
+            <h1 className="pt-2"><Logo size="text-6xl" /></h1>
+            <p className="mt-2 eyebrow">LEARN · GROW · SHINE</p>
+            <p className="mt-1 text-sm text-plum-soft">خطوة كل يوم نحو حلمك ✨</p>
           </div>
           <label className="block">
             <span className="label">اسم المستخدم أو البريد</span>
