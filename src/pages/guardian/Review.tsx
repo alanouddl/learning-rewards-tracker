@@ -1,3 +1,4 @@
+import { I } from '../../components/Icon';
 import { useState } from 'react';
 import { useData } from '../../lib/store';
 import { Card, Empty } from '../../components/ui';
@@ -17,10 +18,10 @@ export default function GuardianReview() {
 
   return (
     <>
-      <h1 className="section-title px-1 text-2xl">✅ مراجعة الإنجازات</h1>
+      <h1 className="section-title px-1 text-2xl"><I n="done" /> مراجعة الإنجازات</h1>
       {(milestoneRewards.length > 0 || completions.length > 0) && (
         <Card>
-          <h2 className="section-title mb-3">🏁 مراحل وكورسات بانتظار الاعتماد</h2>
+          <h2 className="section-title mb-3"><I n="flag" /> مراحل وكورسات بانتظار الاعتماد</h2>
           <div className="space-y-2">
             {completions.map((c) => <CompletionCard key={c.id} c={c} />)}
             {milestoneRewards.map((r) => {
@@ -31,8 +32,8 @@ export default function GuardianReview() {
                     <div className="min-w-0"><div className="ltr text-right font-semibold">{r.title}</div><div className="text-xs text-plum-soft">{sar(r.amount)}</div></div>
                     <RewardActions r={r} />
                   </div>
-                  {m?.student_note && <p className="mt-2 text-sm">💬 {m.student_note}</p>}
-                  {m?.evidence_url && /^https?:\/\//.test(m.evidence_url) && <a className="chip ltr mt-1 bg-sky-50 text-sky-400" href={m.evidence_url} target="_blank" rel="noopener noreferrer">🔗 {m.evidence_url}</a>}
+                  {m?.student_note && <p className="mt-2 text-sm"><I n="message" /> {m.student_note}</p>}
+                  {m?.evidence_url && /^https?:\/\//.test(m.evidence_url) && <a className="chip ltr mt-1 bg-sky-50 text-sky-400" href={m.evidence_url} target="_blank" rel="noopener noreferrer"><I n="link" /> {m.evidence_url}</a>}
                 </div>
               );
             })}
@@ -51,7 +52,7 @@ export default function GuardianReview() {
           <input type="date" className="input" value={to} onChange={(e) => setTo(e.target.value)} aria-label="إلى تاريخ" />
         </div>
       </Card>
-      {list.length === 0 ? <Card><Empty emoji="🎉" text={status === 'pending' ? 'لا يوجد شيء بانتظار المراجعة' : 'لا توجد نتائج'} /></Card> : (
+      {list.length === 0 ? <Card><Empty icon="party" text={status === 'pending' ? 'لا يوجد شيء بانتظار المراجعة' : 'لا توجد نتائج'} /></Card> : (
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2">{list.map((c) => <CheckinCard key={c.id} c={c} />)}</div>
       )}
     </>

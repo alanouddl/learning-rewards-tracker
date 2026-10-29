@@ -1,3 +1,4 @@
+import { I, IconBubble, categoryIcon } from '../../components/Icon';
 import { useState } from 'react';
 import { supabase, friendlyError } from '../../lib/supabase';
 import { useData } from '../../lib/store';
@@ -16,7 +17,7 @@ export default function GuardianCourses() {
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-2 px-1">
-        <h1 className="section-title text-2xl">📚 الكورسات والمكافآت</h1>
+        <h1 className="section-title text-2xl"><I n="book" /> الكورسات والمكافآت</h1>
         <button className="btn-primary" onClick={() => setEdit({ category_id: d.categories[0]?.id ?? null, status: 'not_started', progress: 0 })}>+ إضافة كورس</button>
       </div>
       {completions.length > 0 && <Card><div className="space-y-2">{completions.map((c) => <CompletionCard key={c.id} c={c} />)}</div></Card>}
@@ -27,7 +28,7 @@ export default function GuardianCourses() {
         const list = courses.filter((c) => c.category_id === cat.id);
         return (
           <Card key={cat.id}>
-            <h2 className="section-title mb-3"><span>{cat.emoji}</span><span className="ltr">{cat.name}</span><span className="chip bg-lav-50 text-plum-soft">{sar(cat.budget)}</span></h2>
+            <h2 className="section-title mb-3"><IconBubble n={categoryIcon(cat.name)} size="h-8 w-8" icon={16} /><span className="ltr">{cat.name}</span><span className="chip bg-lav-50 text-plum-soft">{sar(cat.budget)}</span></h2>
             {list.length === 0 && <p className="text-sm text-plum-faint">لا يوجد كورس في هذا المجال.</p>}
             <div className="space-y-2">
               {list.map((c) => {
@@ -39,9 +40,9 @@ export default function GuardianCourses() {
                         <div className="ltr text-right font-semibold">{c.title} {c.archived && <span className="chip bg-cream-100">مؤرشف</span>}</div>
                         <div className="text-xs text-plum-soft">{STATUS_LABEL[c.status]} • {ms.length} مراحل • {sar(ms.reduce((a, m) => a + m.reward, 0))}</div>
                         {c.url ? <a href={c.url} target="_blank" rel="noopener noreferrer" className="ltr block truncate text-left text-xs text-sky-400">{c.url}</a>
-                          : <span className="text-xs text-blush-400">⚠️ لم يُضف رابط بعد</span>}
+                          : <span className="text-xs text-blush-400"><I n="alert" /> لم يُضف رابط بعد</span>}
                       </div>
-                      <button className="btn-soft !py-1.5 text-sm" onClick={() => setEdit(c)}>✏️ تعديل</button>
+                      <button className="btn-soft !py-1.5 text-sm" onClick={() => setEdit(c)}><I n="pencil" /> تعديل</button>
                     </div>
                     <div className="mt-2"><ProgressBar value={c.progress} height="h-2" tone="lav" /></div>
                   </div>
@@ -83,7 +84,7 @@ function Allocation() {
     }).eq('id', c.id);
     if (error) return toast(friendlyError(error), 'err');
     setRows((r) => { const n = { ...r }; delete n[c.id]; return n; });
-    toast('تم حفظ التوزيع ✅'); d.refresh();
+    toast('تم حفظ التوزيع'); d.refresh();
   }
   async function remove(c: Category) {
     if (!confirm(`حذف مجال ${c.name}؟`)) return;
@@ -92,7 +93,7 @@ function Allocation() {
     d.refresh();
   }
   async function add() {
-    const { error } = await supabase.from('categories').insert({ name: 'مجال جديد', emoji: '✨', budget: 0, daily_pool: 0, sort: d.categories.length + 1 });
+    const { error } = await supabase.from('categories').insert({ name: 'مجال جديد', budget: 0, daily_pool: 0, sort: d.categories.length + 1 });
     setAdding(false);
     if (error) return toast(friendlyError(error), 'err');
     d.refresh();
@@ -100,7 +101,7 @@ function Allocation() {
 
   return (
     <Card>
-      <h2 className="section-title">🧮 توزيع ميزانية {sar(d.settings.total_budget)}</h2>
+      <h2 className="section-title"><I n="calculator" /> توزيع ميزانية {sar(d.settings.total_budget)}</h2>
       <p className="mt-1 text-xs text-plum-soft">
         لكل مجال: جزء لمكافآت الالتزام اليومي/الأسبوعي، والباقي لمكافآت المراحل. المجموع لا يمكن أن يتجاوز {sar(d.settings.total_budget)} — يمنعه النظام تلقائياً.
       </p>
@@ -111,7 +112,7 @@ function Allocation() {
           return (
             <div key={c.id} className="rounded-2xl bg-cream-50 p-3">
               <div className="grid grid-cols-[3rem_1fr] gap-2 sm:grid-cols-[3rem_1fr_7rem_7rem_auto]">
-                <input className="input !px-2 text-center" value={val(c, 'emoji')} onChange={(e) => set(c.id, 'emoji', e.target.value)} aria-label="رمز" />
+                <span className="grid place-items-center"><IconBubble n={categoryIcon(String(val(c, 'name')))} size="h-10 w-10" /></span>
                 <input className="input ltr" value={val(c, 'name')} onChange={(e) => set(c.id, 'name', e.target.value)} aria-label="اسم المجال" />
                 <label className="text-xs"><span className="text-plum-soft">الإجمالي (ر.س)</span>
                   <input className="input !py-1.5" type="number" min={0} value={val(c, 'budget')} onChange={(e) => set(c.id, 'budget', e.target.value)} /></label>
@@ -119,7 +120,7 @@ function Allocation() {
                   <input className="input !py-1.5" type="number" min={0} value={val(c, 'daily_pool')} onChange={(e) => set(c.id, 'daily_pool', e.target.value)} /></label>
                 <div className="col-span-2 flex items-end gap-1 sm:col-span-1">
                   <button className="btn-soft !py-1.5 text-sm" disabled={!rows[c.id]} onClick={() => save(c)}>حفظ</button>
-                  <button className="btn-ghost !px-2 !py-1.5 text-sm" onClick={() => remove(c)} aria-label="حذف">🗑️</button>
+                  <button className="btn-ghost !px-2 !py-1.5 text-sm" onClick={() => remove(c)} aria-label="حذف"><I n="trash" /></button>
                 </div>
               </div>
               <div className={`mt-1.5 text-xs ${used > room ? 'text-blush-500' : 'text-plum-soft'}`}>
@@ -157,7 +158,7 @@ function CourseForm({ course, onDone }: { course: Partial<Course>; onDone: () =>
       : await supabase.from('courses').insert({ ...row, sort: d.courses.length + 1 });
     setBusy(false);
     if (error) return toast(friendlyError(error), 'err');
-    toast('تم الحفظ ✅'); d.refresh(); if (!f.id) onDone();
+    toast('تم الحفظ'); d.refresh(); if (!f.id) onDone();
   }
   async function remove() {
     if (!f.id || !confirm('حذف الكورس نهائياً؟ (إذا عليه مكافآت، استخدمي الأرشفة)')) return;
@@ -172,7 +173,7 @@ function CourseForm({ course, onDone }: { course: Partial<Course>; onDone: () =>
         <Field label="اسم الكورس *"><input className="input ltr" value={f.title ?? ''} onChange={(e) => up('title', e.target.value)} /></Field>
         <Field label="المجال">
           <select className="input" value={f.category_id ?? ''} onChange={(e) => up('category_id', e.target.value)}>
-            <option value="">—</option>{d.categories.map((c) => <option key={c.id} value={c.id}>{c.emoji} {c.name}</option>)}
+            <option value="">—</option>{d.categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
         </Field>
         <Field label="رابط الكورس الخارجي" hint="يفتح في تبويب جديد. الصقي الرابط الكامل https://…">
@@ -195,7 +196,7 @@ function CourseForm({ course, onDone }: { course: Partial<Course>; onDone: () =>
       <Field label="ملاحظات"><textarea className="input min-h-16" value={f.notes ?? ''} onChange={(e) => up('notes', e.target.value)} /></Field>
       <div className="flex flex-wrap gap-2">
         <button className="btn-primary flex-1" disabled={busy} onClick={save}>{f.id ? 'حفظ التعديلات' : 'إضافة الكورس'}</button>
-        {f.id && <button className="btn-danger" onClick={remove}>🗑️ حذف</button>}
+        {f.id && <button className="btn-danger" onClick={remove}><I n="trash" /> حذف</button>}
       </div>
       {f.id && <MilestoneEditor courseId={f.id} />}
       {!f.id && <p className="text-xs text-plum-faint">بعد الإضافة، افتحي الكورس مرة ثانية لإضافة المراحل ومكافآتها.</p>}
@@ -224,7 +225,7 @@ function MilestoneEditor({ courseId }: { courseId: string }) {
   async function save(m: Milestone) {
     const { error } = await supabase.from('milestones').update({ ...draft[m.id], reward: Number(draft[m.id]?.reward ?? m.reward) }).eq('id', m.id);
     if (error) return toast(friendlyError(error), 'err');
-    setDraft((x) => { const n = { ...x }; delete n[m.id]; return n; }); toast('تم ✅'); d.refresh();
+    setDraft((x) => { const n = { ...x }; delete n[m.id]; return n; }); toast('تم'); d.refresh();
   }
   async function remove(m: Milestone) {
     if (!confirm('حذف المرحلة؟')) return;
@@ -235,7 +236,7 @@ function MilestoneEditor({ courseId }: { courseId: string }) {
 
   return (
     <div className="rounded-3xl bg-lav-50 p-4">
-      <h3 className="section-title text-base">🏁 مراحل الكورس ومكافآتها</h3>
+      <h3 className="section-title text-base"><I n="flag" /> مراحل الكورس ومكافآتها</h3>
       {cat && <p className="mt-1 text-xs text-plum-soft">المتاح لمراحل مجال {cat.name}: {sar(Math.max(0, room))} إضافية</p>}
       <ul className="mt-3 space-y-2">
         {ms.map((m) => {
@@ -247,8 +248,8 @@ function MilestoneEditor({ courseId }: { courseId: string }) {
                 value={draft[m.id]?.reward ?? m.reward} onChange={(e) => setDraft((x) => ({ ...x, [m.id]: { ...x[m.id], reward: Number(e.target.value) } }))} />
               <div className="flex gap-1">
                 {draft[m.id] && <button className="btn-soft !px-2 !py-1 text-xs" onClick={() => save(m)}>حفظ</button>}
-                {!locked && <button className="btn-ghost !px-2 !py-1 text-xs" onClick={() => remove(m)} aria-label="حذف">🗑️</button>}
-                {locked && <span className="text-xs">{m.status === 'approved' ? '🏆' : '⏳'}</span>}
+                {!locked && <button className="btn-ghost !px-2 !py-1 text-xs" onClick={() => remove(m)} aria-label="حذف"><I n="trash" /></button>}
+                {locked && <span className="text-xs">{m.status === 'approved' ? '' : ''}</span>}
               </div>
             </li>
           );

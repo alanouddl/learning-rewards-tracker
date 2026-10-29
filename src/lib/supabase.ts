@@ -28,7 +28,7 @@ export function friendlyError(e: unknown): string {
   }
   if (msg.includes('Invalid login credentials')) return 'اسم المستخدم أو كلمة المرور غير صحيحة.';
   if (msg.includes('last 7 days')) return 'يمكن تسجيل الدراسة لليوم أو آخر ٧ أيام فقط.';
-  if (msg.includes('what you finished')) return 'اكتبي ماذا أنجزتِ اليوم 🌸';
+  if (msg.includes('what you finished')) return 'اكتبي ماذا أنجزتِ اليوم';
   if (msg.includes('already has a reward')) return 'هذه المرحلة لها مكافأة مسجلة، لا يمكن حذفها أو تغيير مبلغها.';
   if (msg.includes('violates foreign key') || msg.includes('restrict')) return 'لا يمكن الحذف لأن هناك بيانات مرتبطة. يمكنك أرشفة العنصر بدلاً من ذلك.';
   if (msg.includes('url_check') || msg.includes('thumbnail_url_check')) return 'الرابط يجب أن يبدأ بـ https://';

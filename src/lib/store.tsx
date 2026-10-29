@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import { supabase } from './supabase';
+import { noEmoji } from '../components/Icon';
 import type {
   Category, Checkin, Course, Milestone, Notification, PlanChange, Profile, ProgressUpdate, Reward,
   RewardEvent, ScheduleDay, Settings, Summary, Task, TaskCompletion, TimerState,
@@ -64,14 +65,17 @@ async function loadAll(userId: string): Promise<Data> {
   Object.keys(s).forEach((k) => (s[k] = Number(s[k])));
   return {
     me, profiles,
-    settings: { ...settings, total_budget: Number(settings.total_budget), daily_reward: Number(settings.daily_reward), weekly_bonus: Number(settings.weekly_bonus) },
+    settings: { ...settings, goal_label: noEmoji(settings.goal_label), guardian_message: noEmoji(settings.guardian_message), total_budget: Number(settings.total_budget), daily_reward: Number(settings.daily_reward), weekly_bonus: Number(settings.weekly_bonus) },
     categories: num(categories, ['budget', 'daily_pool']),
     courses: num(courses, ['est_hours']),
     milestones: num(milestones, ['reward']),
-    schedule, planChanges, tasks, completions, checkins,
+    schedule: schedule.map((x) => ({ ...x, label: noEmoji(x.label), task_text: noEmoji(x.task_text) })),
+    planChanges: planChanges.map((x) => ({ ...x, label: noEmoji(x.label), task_text: noEmoji(x.task_text) })),
+    tasks, completions, checkins,
     rewards: num(rewards, ['amount']),
     events: num(events, ['amount']),
-    notifications, progressUpdates,
+    notifications: notifications.map((n) => ({ ...n, title: noEmoji(n.title), body: noEmoji(n.body) })),
+    progressUpdates,
     summary: summary as Summary,
     timer,
     clockOffsetMs: timer ? new Date(timer.server_now).getTime() - Date.now() : 0,

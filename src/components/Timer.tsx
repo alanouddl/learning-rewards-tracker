@@ -1,3 +1,4 @@
+import { I } from './Icon';
 import { useEffect, useState } from 'react';
 import { supabase, friendlyError } from '../lib/supabase';
 import { useData } from '../lib/store';
@@ -57,17 +58,17 @@ export function StudyTimer({ courseId, targetMinutes, onFinish }: { courseId: st
           <circle cx="50" cy="50" r="44" stroke="#fde2ec" strokeWidth="7" fill="none" />
           <circle cx="50" cy="50" r="44" stroke="url(#tg)" strokeWidth="7" fill="none" strokeLinecap="round"
             strokeDasharray={276.5} strokeDashoffset={276.5 - (276.5 * pct) / 100} style={{ transition: 'stroke-dashoffset .9s linear' }} />
-          <defs><linearGradient id="tg"><stop offset="0" stopColor="#f2c46b" /><stop offset="1" stopColor="#e05f8e" /></linearGradient></defs>
+          <defs><linearGradient id="tg"><stop offset="0" stopColor="#f6a1c1" /><stop offset="1" stopColor="#e05f8e" /></linearGradient></defs>
         </svg>
         <div className="text-center">
           <div className="ltr font-display text-4xl font-bold tabular-nums" aria-live="off">{clock(secs)}</div>
-          <div className="text-xs text-plum-soft">{timer?.running ? 'جاري المذاكرة… 📖' : started ? 'متوقف مؤقتاً ⏸️' : `الهدف ${targetMinutes || '—'} دقيقة`}</div>
+          <div className="text-xs text-plum-soft">{timer?.running ? 'جاري المذاكرة…' : started ? 'متوقف مؤقتاً' : `الهدف ${targetMinutes || '—'} دقيقة`}</div>
         </div>
       </div>
       <div className="flex flex-wrap justify-center gap-2">
-        {!started && <button className="btn-primary min-w-32" disabled={busy} onClick={() => act('start')}>▶ ابدئي</button>}
-        {timer?.running && <button className="btn-soft min-w-28" disabled={busy} onClick={() => act('pause')}>⏸ إيقاف مؤقت</button>}
-        {started && !timer?.running && <button className="btn-soft min-w-28" disabled={busy} onClick={() => act('resume')}>▶ استئناف</button>}
+        {!started && <button className="btn-primary min-w-32" disabled={busy} onClick={() => act('start')}><I n="play" /> ابدئي</button>}
+        {timer?.running && <button className="btn-soft min-w-28" disabled={busy} onClick={() => act('pause')}><I n="pause" /> إيقاف مؤقت</button>}
+        {started && !timer?.running && <button className="btn-soft min-w-28" disabled={busy} onClick={() => act('resume')}><I n="play" /> استئناف</button>}
         {started && <button className="btn-primary min-w-28" disabled={busy} onClick={finish}>✓ إنهاء</button>}
         {started && !timer?.running && (
           <button className="btn-ghost text-sm" disabled={busy} onClick={() => confirm('تصفير المؤقت؟') && act('reset')}>تصفير</button>

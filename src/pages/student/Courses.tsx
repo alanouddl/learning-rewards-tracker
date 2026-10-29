@@ -1,3 +1,4 @@
+import { I, categoryIcon } from '../../components/Icon';
 import { useState } from 'react';
 import { supabase, friendlyError } from '../../lib/supabase';
 import { useData } from '../../lib/store';
@@ -23,8 +24,8 @@ export default function StudentCourses() {
 
   return (
     <>
-      <h1 className="section-title px-1 text-2xl">📚 كورساتي</h1>
-      <p className="px-1 text-sm text-plum-soft">الكورسات تفتح في موقعها الأصلي. بعد ما تدرسين، حدّثي تقدمك هنا ✨</p>
+      <h1 className="section-title px-1 text-2xl"><I n="book" /> كورساتي</h1>
+      <p className="px-1 text-sm text-plum-soft">الكورسات تفتح في موقعها الأصلي. بعد ما تدرسين، حدّثي تقدمك هنا <I n="sparkles" /></p>
       {courses.length === 0 && <Card><Empty text="ما فيه كورسات بعد" /></Card>}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {courses.map((c) => {
@@ -37,7 +38,7 @@ export default function StudentCourses() {
               <div className="flex gap-3">
                 {c.thumbnail_url
                   ? <img src={c.thumbnail_url} alt="" className="h-16 w-16 shrink-0 rounded-2xl object-cover" referrerPolicy="no-referrer" />
-                  : <div className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-blush-100 to-lav-100 text-3xl">{cat?.emoji ?? '📘'}</div>}
+                  : <div className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-blush-100 to-lav-100 text-blush-500"><I n={categoryIcon(cat?.name ?? '')} size={28} /></div>}
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-1.5">
                     <span className={`chip ${STATUS_CHIP[c.status]}`}>{STATUS_LABEL[c.status]}</span>
@@ -52,16 +53,16 @@ export default function StudentCourses() {
                 <ProgressBar value={c.progress} tone={c.status === 'completed' ? 'mint' : 'pink'} />
               </div>
               <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-plum-soft">
-                {reward > 0 && <span>💰 {sar(reward)}</span>}
-                {ms.length > 0 && <span>🏁 {msDone}/{ms.length} مراحل</span>}
-                {c.target_date && <span>🎯 {fmtDate(c.target_date)}</span>}
-                {c.weekly_minutes > 0 && <span>⏱️ {c.weekly_minutes} د/أسبوع</span>}
+                {reward > 0 && <span><I n="wallet" /> {sar(reward)}</span>}
+                {ms.length > 0 && <span><I n="flag" /> {msDone}/{ms.length} مراحل</span>}
+                {c.target_date && <span><I n="target" /> {fmtDate(c.target_date)}</span>}
+                {c.weekly_minutes > 0 && <span><I n="timer" /> {c.weekly_minutes} د/أسبوع</span>}
               </div>
               {ms.length > 0 && (
                 <ul className="mt-3 space-y-1.5">
                   {ms.map((m) => (
                     <li key={m.id} className="flex items-center gap-2 rounded-xl bg-cream-50 px-2.5 py-2 text-sm">
-                      <span>{m.status === 'approved' ? '🏆' : m.status === 'awaiting' ? '⏳' : '⭕'}</span>
+                      <span>{m.status === 'approved' ? '' : m.status === 'awaiting' ? '' : '⭕'}</span>
                       <span className="ltr min-w-0 flex-1 truncate text-right">{m.title}</span>
                       {m.reward > 0 && <span className="shrink-0 text-xs text-plum-soft">{sar(m.reward)}</span>}
                       {m.status === 'open' && c.status !== 'completed' && (
@@ -73,16 +74,16 @@ export default function StudentCourses() {
               )}
               <div className="mt-auto flex flex-wrap gap-2 pt-4">
                 <OpenCourseButton course={c} />
-                {c.status !== 'completed' && <button className="btn-soft" onClick={() => setEdit(c)}>📈 تحديث التقدم</button>}
+                {c.status !== 'completed' && <button className="btn-soft" onClick={() => setEdit(c)}><I n="trend" /> تحديث التقدم</button>}
               </div>
             </Card>
           );
         })}
       </div>
-      <Modal open={!!edit} onClose={() => setEdit(null)} title="📈 تحديث التقدم">
+      <Modal open={!!edit} onClose={() => setEdit(null)} title="تحديث التقدم">
         {edit && <ProgressForm course={edit} onDone={() => setEdit(null)} />}
       </Modal>
-      <Modal open={!!claim} onClose={() => setClaim(null)} title="🏁 خلصتي مرحلة!">
+      <Modal open={!!claim} onClose={() => setClaim(null)} title="خلصتي مرحلة!">
         {claim && <ClaimForm m={claim} onDone={() => setClaim(null)} />}
       </Modal>
     </>
@@ -102,8 +103,8 @@ function ProgressForm({ course, onDone }: { course: Course; onDone: () => void }
       : await supabase.rpc('update_course_progress', { p_course: course.id, p_progress: v, p_note: note });
     setBusy(false);
     if (error) return toast(friendlyError(error), 'err');
-    if (complete) { celebrate(true); toast('وااو! أرسلنا طلب إكمال الكورس للموافقة 🎓'); }
-    else toast('تم حفظ تقدمك 💜');
+    if (complete) { celebrate(true); toast('وااو! أرسلنا طلب إكمال الكورس للموافقة'); }
+    else toast('تم حفظ تقدمك');
     d.refresh(); onDone();
   }
   return (
@@ -119,9 +120,9 @@ function ProgressForm({ course, onDone }: { course: Course; onDone: () => void }
       </label>
       <div className="flex flex-wrap gap-2">
         <button className="btn-primary flex-1" disabled={busy} onClick={() => save(false)}>حفظ</button>
-        <button className="btn-mint flex-1" disabled={busy} onClick={() => confirm('أكيد خلصتي الكورس كامل؟ 🎓') && save(true)}>🎓 خلصت الكورس</button>
+        <button className="btn-mint flex-1" disabled={busy} onClick={() => confirm('أكيد خلصتي الكورس كامل؟') && save(true)}><I n="graduation" /> خلصت الكورس</button>
       </div>
-      <p className="text-xs text-plum-faint">التقدم يسجّل يدوياً منك، وولي الأمر يتأكد منه 💛</p>
+      <p className="text-xs text-plum-faint">التقدم يسجّل يدوياً منك، وولي الأمر يتأكد منه <I n="heart" /></p>
     </div>
   );
 }
@@ -137,7 +138,7 @@ function ClaimForm({ m, onDone }: { m: Milestone; onDone: () => void }) {
     const { error } = await supabase.rpc('claim_milestone', { p_milestone: m.id, p_note: note, p_evidence: link });
     setBusy(false);
     if (error) return toast(friendlyError(error), 'err');
-    celebrate(); toast('أرسلنا المرحلة للموافقة 🏁'); d.refresh(); onDone();
+    celebrate(); toast('أرسلنا المرحلة للموافقة'); d.refresh(); onDone();
   }
   return (
     <div className="space-y-3">
@@ -149,7 +150,7 @@ function ClaimForm({ m, onDone }: { m: Milestone; onDone: () => void }) {
       <label className="block"><span className="label">رابط إثبات (اختياري)</span>
         <input className="input ltr text-left" value={link} onChange={(e) => setLink(e.target.value)} placeholder="https://…" />
       </label>
-      <button className="btn-primary w-full" disabled={busy} onClick={send}>إرسال للموافقة 💌</button>
+      <button className="btn-primary w-full" disabled={busy} onClick={send}>إرسال للموافقة <I n="love" /></button>
       <p className="text-center text-xs text-plum-faint">نسبة الإنجاز الإجمالية: {pct(d.milestones.filter((x) => x.status === 'approved').length, d.milestones.length)}% من كل المراحل</p>
     </div>
   );

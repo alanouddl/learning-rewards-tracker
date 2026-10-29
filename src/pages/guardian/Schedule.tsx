@@ -1,3 +1,4 @@
+import { I } from '../../components/Icon';
 import { useState } from 'react';
 import { supabase, friendlyError } from '../../lib/supabase';
 import { useData } from '../../lib/store';
@@ -10,7 +11,7 @@ import type { ScheduleDay, Task } from '../../lib/types';
 export default function GuardianSchedule() {
   return (
     <>
-      <h1 className="section-title px-1 text-2xl">🗓️ الجدول والأهداف والمهام</h1>
+      <h1 className="section-title px-1 text-2xl"><I n="calendar" /> الجدول والأهداف والمهام</h1>
       <WeeklySchedule />
       <DateChanges />
       <Tasks />
@@ -34,12 +35,12 @@ function WeeklySchedule() {
     if (error) return toast(friendlyError(error), 'err');
     const e2 = (await supabase.from('settings').update({ weekly_target_minutes: Number(target), daily_reward: Number(dailyReward), weekly_bonus: Number(weeklyBonus), updated_at: new Date().toISOString() }).eq('id', 1)).error;
     if (e2) return toast(friendlyError(e2), 'err');
-    toast('تم حفظ الجدول والأهداف ✅'); d.refresh();
+    toast('تم حفظ الجدول والأهداف'); d.refresh();
   }
 
   return (
     <Card>
-      <h2 className="section-title mb-3">📋 الجدول الأسبوعي الأساسي</h2>
+      <h2 className="section-title mb-3"><I n="clipboard" /> الجدول الأسبوعي الأساسي</h2>
       <div className="space-y-2">
         {rows.map((r, i) => (
           <div key={r.dow} className="grid grid-cols-[4.5rem_1fr_5rem] gap-2 rounded-2xl bg-cream-50 p-2 sm:grid-cols-[5rem_1fr_1fr_5rem_1.5fr]">
@@ -56,12 +57,12 @@ function WeeklySchedule() {
       </div>
       <p className="mt-2 text-xs text-plum-soft">مجموع الجدول: {mins(total)} أسبوعياً. اكتبي 0 دقيقة ليوم الراحة.</p>
       <div className="mt-4 grid gap-3 sm:grid-cols-3">
-        <Field label="🎯 الهدف الأسبوعي (دقائق)" hint={total !== Number(target) ? `الجدول = ${total} د` : 'يطابق الجدول'}>
+        <Field label="الهدف الأسبوعي (دقائق)" hint={total !== Number(target) ? `الجدول = ${total} د` : 'يطابق الجدول'}>
           <div className="flex gap-1"><input className="input" type="number" min={0} value={target} onChange={(e) => setTarget(Number(e.target.value))} />
             {total !== Number(target) && <button className="btn-ghost !px-2 text-xs" onClick={() => setTarget(total)}>= الجدول</button>}</div>
         </Field>
-        <Field label="🌷 مكافأة إكمال هدف اليوم (ر.س)"><input className="input" type="number" min={0} step={0.5} value={dailyReward} onChange={(e) => setDailyReward(Number(e.target.value))} /></Field>
-        <Field label="🌟 مكافأة إضافية لهدف الأسبوع (ر.س)"><input className="input" type="number" min={0} step={0.5} value={weeklyBonus} onChange={(e) => setWeeklyBonus(Number(e.target.value))} /></Field>
+        <Field label="مكافأة إكمال هدف اليوم (ر.س)"><input className="input" type="number" min={0} step={0.5} value={dailyReward} onChange={(e) => setDailyReward(Number(e.target.value))} /></Field>
+        <Field label="مكافأة إضافية لهدف الأسبوع (ر.س)"><input className="input" type="number" min={0} step={0.5} value={weeklyBonus} onChange={(e) => setWeeklyBonus(Number(e.target.value))} /></Field>
       </div>
       <p className="mt-2 text-xs text-plum-soft">المكافآت اليومية والأسبوعية تُصرف من «صندوق الالتزام» ضمن نفس ميزانية {d.settings.total_budget} ريال، ولا تُعتمد إلا بعد موافقتك.</p>
       <button className="btn-primary mt-4 w-full sm:w-auto" onClick={save}>حفظ الجدول والأهداف</button>
@@ -86,7 +87,7 @@ function DateChanges() {
     if (del) return toast(friendlyError(del), 'err');
     const { error } = await supabase.from('plan_changes').insert({ plan_date: date, kind: 'replace', minutes, label, course_id: course || null, task_text: task });
     if (error) return toast(friendlyError(error), 'err');
-    toast('تم تعديل اليوم ✅'); d.refresh();
+    toast('تم تعديل اليوم'); d.refresh();
   }
   async function remove(id: string) {
     const { error } = await supabase.from('plan_changes').delete().eq('id', id);
@@ -96,7 +97,7 @@ function DateChanges() {
 
   return (
     <Card>
-      <h2 className="section-title">✏️ تعديل يوم محدد</h2>
+      <h2 className="section-title"><I n="pencil" /> تعديل يوم محدد</h2>
       <p className="mt-1 text-xs text-plum-soft">لتغيير خطة تاريخ معين فقط (مثلاً: إجازة، أو مدة مختلفة) بدون تغيير الجدول الأساسي.</p>
       <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-5">
         <input type="date" className="input" value={date} onChange={(e) => setDate(e.target.value)} aria-label="التاريخ" />
@@ -112,9 +113,9 @@ function DateChanges() {
         <ul className="mt-3 divide-y divide-lav-100 text-sm">
           {upcoming.map((c) => (
             <li key={c.id} className="flex items-center justify-between gap-2 py-2">
-              <span>{c.kind === 'makeup' ? '📅 تعويض' : '✏️ تعديل'} • {DAY_NAMES[dow(c.plan_date)]} {fmtDate(c.plan_date)} — <span className="ltr">{c.label || courseName(d.courses, c.course_id)}</span> ({c.minutes} د)
+              <span>{c.kind === 'makeup' ? 'تعويض' : 'تعديل'} • {DAY_NAMES[dow(c.plan_date)]} {fmtDate(c.plan_date)} — <span className="ltr">{c.label || courseName(d.courses, c.course_id)}</span> ({c.minutes} د)
                 {c.from_date && <span className="text-plum-faint"> بدل {fmtDate(c.from_date)}</span>}</span>
-              <button className="btn-ghost !px-2 !py-1 text-xs" onClick={() => remove(c.id)}>🗑️</button>
+              <button className="btn-ghost !px-2 !py-1 text-xs" onClick={() => remove(c.id)}><I n="trash" /></button>
             </li>
           ))}
         </ul>
@@ -131,7 +132,7 @@ function Tasks() {
     if (!f.title?.trim()) return toast('اكتبي عنوان المهمة', 'err');
     const { error } = await supabase.from('tasks').insert({ title: f.title.trim(), details: f.details ?? '', kind: f.kind, course_id: f.course_id || null, due_date: f.kind === 'once' ? f.due_date || todayStr() : null });
     if (error) return toast(friendlyError(error), 'err');
-    setF({ kind: 'once', due_date: todayStr() }); toast('تمت إضافة المهمة ✅'); d.refresh();
+    setF({ kind: 'once', due_date: todayStr() }); toast('تمت إضافة المهمة'); d.refresh();
   }
   async function patch(t: Task, p: Partial<Task>) {
     const { error } = await supabase.from('tasks').update(p).eq('id', t.id);
@@ -148,7 +149,7 @@ function Tasks() {
 
   return (
     <Card>
-      <h2 className="section-title mb-3">✅ المهام اليومية والأسبوعية</h2>
+      <h2 className="section-title mb-3"><I n="done" /> المهام اليومية والأسبوعية</h2>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
         <input className="input col-span-2" placeholder="عنوان المهمة" value={f.title ?? ''} onChange={(e) => setF({ ...f, title: e.target.value })} />
         <select className="input" value={f.kind} onChange={(e) => setF({ ...f, kind: e.target.value as Task['kind'] })} aria-label="النوع">
@@ -169,7 +170,7 @@ function Tasks() {
             <span className="text-xs text-plum-soft">✓ {doneCount(t)}</span>
             {t.kind === 'once' && <input type="date" className="input !w-36 !py-1 text-xs" value={t.due_date ?? ''} onChange={(e) => patch(t, { due_date: e.target.value })} aria-label="إعادة جدولة" />}
             <button className="btn-ghost !px-2 !py-1 text-xs" onClick={() => patch(t, { active: !t.active })}>{t.active ? 'إيقاف' : 'تفعيل'}</button>
-            <button className="btn-ghost !px-2 !py-1 text-xs" onClick={() => remove(t)}>🗑️</button>
+            <button className="btn-ghost !px-2 !py-1 text-xs" onClick={() => remove(t)}><I n="trash" /></button>
           </li>
         ))}
       </ul>

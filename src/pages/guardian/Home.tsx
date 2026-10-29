@@ -1,3 +1,4 @@
+import { I, type IconName } from '../../components/Icon';
 import { Link } from 'react-router-dom';
 import { useData } from '../../lib/store';
 import { fmtDate, fmtDateTime, todayStr } from '../../lib/dates';
@@ -23,33 +24,33 @@ export default function GuardianHome() {
 
   return (
     <>
-      <h1 className="section-title px-1 text-2xl">أهلاً 👋 هذا ملخص {student?.display_name ?? 'الطالبة'}</h1>
+      <h1 className="section-title px-1 text-2xl">أهلاً هذا ملخص {student?.display_name ?? 'الطالبة'}</h1>
       {!student && (
-        <Card className="!bg-peach-100"><p className="text-sm">⚠️ لم يتم إنشاء حساب الطالبة بعد. أنشئيه من Supabase (راجعي README).</p></Card>
+        <Card className="!bg-peach-100"><p className="text-sm"><I n="alert" /> لم يتم إنشاء حساب الطالبة بعد. أنشئيه من Supabase (راجعي README).</p></Card>
       )}
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <Stat emoji="📝" label="إنجازات للمراجعة" value={pendingCheckins.length} tone="pink" />
-        <Stat emoji="💰" label="مكافآت للموافقة" value={pendingRewards.length} sub={pendingRewards.length ? sar(s.pending) : undefined} tone="lav" />
-        <Stat emoji="⏱️" label="اليوم" value={`${minutesOn(today, d.checkins)} / ${plan.minutes} د`} sub={plan.minutes ? plan.label : 'يوم راحة'} tone="blue" />
-        <Stat emoji="🔥" label="السلسلة" value={`${current} يوم`} tone="cream" />
+        <Stat icon="notebook" label="إنجازات للمراجعة" value={pendingCheckins.length} tone="pink" />
+        <Stat icon="wallet" label="مكافآت للموافقة" value={pendingRewards.length} sub={pendingRewards.length ? sar(s.pending) : undefined} tone="lav" />
+        <Stat icon="timer" label="اليوم" value={`${minutesOn(today, d.checkins)} / ${plan.minutes} د`} sub={plan.minutes ? plan.label : 'يوم راحة'} tone="blue" />
+        <Stat icon="flame" label="السلسلة" value={`${current} يوم`} tone="cream" />
       </div>
 
       {(pendingCheckins.length > 0 || help.length > 0) && (
         <Card>
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 className="section-title">📝 بانتظار مراجعتك</h2>
+            <h2 className="section-title"><I n="notebook" /> بانتظار مراجعتك</h2>
             <Link to="/g/review" className="btn-primary !py-2 text-sm">مراجعة الإنجازات ({pendingCheckins.length})</Link>
           </div>
-          {help.length > 0 && <p className="mt-2 rounded-2xl bg-peach-100 p-2.5 text-sm">🙋‍♀️ طلبت مساعدة في {help.length} إنجاز</p>}
+          {help.length > 0 && <p className="mt-2 rounded-2xl bg-peach-100 p-2.5 text-sm"><I n="hand" /> طلبت مساعدة في {help.length} إنجاز</p>}
         </Card>
       )}
 
-      {completions.length > 0 && <Card><h2 className="section-title mb-3">🎓 طلبات إكمال كورس</h2><div className="space-y-2">{completions.map((c) => <CompletionCard key={c.id} c={c} />)}</div></Card>}
+      {completions.length > 0 && <Card><h2 className="section-title mb-3"><I n="graduation" /> طلبات إكمال كورس</h2><div className="space-y-2">{completions.map((c) => <CompletionCard key={c.id} c={c} />)}</div></Card>}
 
       {pendingRewards.length > 0 && (
         <Card>
-          <h2 className="section-title mb-3">💰 مكافآت بانتظار موافقتك</h2>
+          <h2 className="section-title mb-3"><I n="wallet" /> مكافآت بانتظار موافقتك</h2>
           <ul className="space-y-2">
             {pendingRewards.map((r) => (
               <li key={r.id} className="flex flex-wrap items-center justify-between gap-2 rounded-2xl bg-cream-50 p-3">
@@ -63,7 +64,7 @@ export default function GuardianHome() {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Card>
-          <h2 className="section-title mb-3">🗓️ هذا الأسبوع</h2>
+          <h2 className="section-title mb-3"><I n="calendar" /> هذا الأسبوع</h2>
           <WeekCalendar d={d} days={w.days} />
           <Legend />
           <div className="mt-3 flex justify-between text-sm"><span>{mins(w.done)} مسجلة • {mins(w.approved)} معتمدة</span><b>{pct(w.done, w.target)}%</b></div>
@@ -84,15 +85,15 @@ export default function GuardianHome() {
       </div>
 
       <Card>
-        <h2 className="section-title mb-3">🕒 آخر النشاطات</h2>
+        <h2 className="section-title mb-3"><I n="clock" /> آخر النشاطات</h2>
         {d.checkins.length === 0 && d.progressUpdates.length === 0 ? <Empty text="لا يوجد نشاط بعد" /> : (
           <ol className="relative space-y-3 border-r-2 border-lav-100 pr-4">
             {[
-              ...d.checkins.slice(0, 8).map((c) => ({ at: c.created_at, text: `سجّلت ${c.minutes} د — ${courseName(d.courses, c.course_id) || 'دراسة'} (${fmtDate(c.study_date)})`, icon: '📝' })),
-              ...d.progressUpdates.slice(0, 6).map((p) => ({ at: p.created_at, text: `حدّثت تقدم ${courseName(d.courses, p.course_id)}: ${p.old_progress}% ← ${p.new_progress}%${p.note ? ` — ${p.note}` : ''}`, icon: '📈' })),
+              ...d.checkins.slice(0, 8).map((c) => ({ at: c.created_at, text: `سجّلت ${c.minutes} د — ${courseName(d.courses, c.course_id) || 'دراسة'} (${fmtDate(c.study_date)})`, icon: 'notebook' as IconName })),
+              ...d.progressUpdates.slice(0, 6).map((p) => ({ at: p.created_at, text: `حدّثت تقدم ${courseName(d.courses, p.course_id)}: ${p.old_progress}% ← ${p.new_progress}%${p.note ? ` — ${p.note}` : ''}`, icon: 'trend' as IconName })),
             ].sort((a, b) => b.at.localeCompare(a.at)).slice(0, 10).map((e, i) => (
               <li key={i} className="relative text-sm">
-                <span className="absolute -right-[27px] top-0 grid h-5 w-5 place-items-center rounded-full bg-white text-xs">{e.icon}</span>
+                <span className="absolute -right-[27px] top-0 grid h-5 w-5 place-items-center rounded-full bg-white text-blush-500"><I n={e.icon} size={13} /></span>
                 <div>{e.text}</div>
                 <div className="text-[11px] text-plum-faint">{fmtDateTime(e.at)}</div>
               </li>

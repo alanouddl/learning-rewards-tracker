@@ -1,3 +1,4 @@
+import { I } from './Icon';
 import { useState } from 'react';
 import { supabase, friendlyError } from '../lib/supabase';
 import { useData } from '../lib/store';
@@ -31,10 +32,10 @@ export function TaskList() {
   async function move(t: Task) {
     const { error } = await supabase.rpc('reschedule_task', { p_task: t.id, p_new_date: newDate });
     if (error) return toast(friendlyError(error), 'err');
-    toast('تم نقل المهمة 📅'); setMoving(null); d.refresh();
+    toast('تم نقل المهمة'); setMoving(null); d.refresh();
   }
 
-  if (!visible.length) return <Empty text="لا توجد مهام حالياً 🌸" />;
+  if (!visible.length) return <Empty text="لا توجد مهام حالياً" />;
   return (
     <ul className="space-y-2">
       {visible.map((t) => {
@@ -52,12 +53,12 @@ export function TaskList() {
                 <div className="mt-0.5 flex flex-wrap gap-1.5 text-[11px] text-plum-soft">
                   <span className="chip bg-lav-50">{t.kind === 'daily' ? 'يومية' : t.kind === 'weekly' ? 'أسبوعية' : t.due_date ? fmtDate(t.due_date) : 'مرة واحدة'}</span>
                   {t.course_id && <span className="chip bg-sky-50">{courseName(d.courses, t.course_id)}</span>}
-                  {overdue && <span className="chip bg-peach-100">ممكن تنقلينها ليوم ثاني 💛</span>}
+                  {overdue && <span className="chip bg-peach-100">ممكن تنقلينها ليوم ثاني <I n="heart" /></span>}
                 </div>
                 {t.details && <p className="mt-1 text-xs text-plum-soft">{t.details}</p>}
               </div>
               {t.kind === 'once' && !done && (
-                <button className="btn-ghost !px-2 !py-1 text-xs" onClick={() => setMoving(moving === t.id ? null : t.id)}>📅 نقل</button>
+                <button className="btn-ghost !px-2 !py-1 text-xs" onClick={() => setMoving(moving === t.id ? null : t.id)}><I n="calendar-days" /> نقل</button>
               )}
             </div>
             {moving === t.id && (

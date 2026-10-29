@@ -1,3 +1,4 @@
+import { I, IconBubble, type IconName } from './components/Icon';
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import type { Session } from '@supabase/supabase-js';
@@ -30,7 +31,7 @@ export default function App() {
     return () => data.subscription.unsubscribe();
   }, []);
 
-  if (!isConfigured) return <Centered emoji="🔧" title="الموقع يحتاج إعداد" text="لم يتم ضبط متغيرات Supabase (VITE_SUPABASE_URL و VITE_SUPABASE_ANON_KEY). راجعي ملف README." />;
+  if (!isConfigured) return <Centered icon="wrench" title="الموقع يحتاج إعداد" text="لم يتم ضبط متغيرات Supabase (VITE_SUPABASE_URL و VITE_SUPABASE_ANON_KEY). راجعي ملف README." />;
   if (session === undefined) return <Loading />;
   return (
     <ToastProvider>
@@ -46,11 +47,11 @@ export default function App() {
 function Authed() {
   const { data, error, refresh } = useStore();
   if (error === 'NO_PROFILE') {
-    return <Centered emoji="🔒" title="هذا الحساب غير مفعّل" text="هذا الموقع خاص بحسابين فقط (ولي الأمر والطالبة)."
+    return <Centered icon="lock" title="هذا الحساب غير مفعّل" text="هذا الموقع خاص بحسابين فقط (ولي الأمر والطالبة)."
       action={<button className="btn-soft" onClick={() => supabase.auth.signOut()}>تسجيل الخروج</button>} />;
   }
   if (error && !data) {
-    return <Centered emoji="☁️" title="تعذّر تحميل البيانات" text={error}
+    return <Centered icon="cloud" title="تعذّر تحميل البيانات" text={error}
       action={<div className="flex gap-2"><button className="btn-primary" onClick={refresh}>إعادة المحاولة</button><button className="btn-ghost" onClick={() => supabase.auth.signOut()}>خروج</button></div>} />;
   }
   if (!data) return <Loading />;
@@ -89,18 +90,18 @@ function Loading() {
     <div className="grid min-h-screen place-items-center">
       <div className="flex flex-col items-center gap-3 text-plum-soft">
         <Flower className="h-14 w-14 animate-spin [animation-duration:3s]" />
-        <span className="text-sm">لحظة… 🌷</span>
+        <span className="text-sm">لحظة… <I n="tulip" /></span>
       </div>
     </div>
   );
 }
 
-export function Centered({ emoji, title, text, action }: { emoji: string; title: string; text: string; action?: React.ReactNode }) {
+export function Centered({ icon, title, text, action }: { icon: IconName; title: string; text: string; action?: React.ReactNode }) {
   return (
     <div className="grid min-h-screen place-items-center px-4">
       <div className="card relative max-w-md text-center">
         <Sparkle className="absolute left-5 top-5 h-4 w-4 animate-twinkle" />
-        <div className="text-5xl">{emoji}</div>
+        <div className="flex justify-center"><IconBubble n={icon} size="h-16 w-16" icon={28} /></div>
         <h1 className="mt-3 text-2xl font-bold">{title}</h1>
         <p className="mt-2 text-sm text-plum-soft">{text}</p>
         {action && <div className="mt-4 flex justify-center">{action}</div>}

@@ -19,17 +19,17 @@ export function SavingsJar({ value, pending = 0, size = 180 }: { value: number; 
           <stop offset="100%" stopColor="#e05f8e" />
         </linearGradient>
         <pattern id={`dots-${id}`} width="18" height="18" patternUnits="userSpaceOnUse">
-          <circle cx="5" cy="6" r="3" fill="#fbecc9" opacity=".75" />
+          <circle cx="5" cy="6" r="3" fill="#fde3ed" opacity=".75" />
           <circle cx="14" cy="14" r="2" fill="#fff" opacity=".4" />
         </pattern>
       </defs>
       {/* lid */}
-      <rect x="34" y="18" width="92" height="22" rx="9" fill="#e5a634" />
-      <rect x="44" y="12" width="72" height="10" rx="5" fill="#f2c46b" />
+      <rect x="34" y="18" width="92" height="22" rx="9" fill="#ec5f94" />
+      <rect x="44" y="12" width="72" height="10" rx="5" fill="#f6a1c1" />
       <g clipPath={`url(#jar-${id})`}>
         <rect x="0" y="0" width="160" height="210" fill="#fff4f7" />
         {/* pending (lighter) */}
-        <rect x="0" y={yp} width="160" height={bottom - yp + 20} fill="#f2c46b" opacity=".45" style={{ transition: 'y 1.2s ease-out' }} />
+        <rect x="0" y={yp} width="160" height={bottom - yp + 20} fill="#f6a1c1" opacity=".45" style={{ transition: 'y 1.2s ease-out' }} />
         {/* approved */}
         <g style={{ transform: `translateY(${y}px)`, transition: 'transform 1.4s cubic-bezier(.2,.8,.2,1)' }}>
           <g className="animate-wave">

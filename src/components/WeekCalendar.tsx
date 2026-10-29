@@ -1,17 +1,18 @@
+import { I, type IconName } from './Icon';
 import { DAY_SHORT, dow, fmtDate, todayStr } from '../lib/dates';
 import { dayState, minutesOn, planFor, type DayState } from '../lib/plan';
 import type { Data } from '../lib/store';
 
-export const STATE_STYLE: Record<DayState, { bg: string; icon: string; label: string }> = {
-  done: { bg: 'bg-mint-100 border-mint-300', icon: '✅', label: 'مكتمل' },
-  awaiting: { bg: 'bg-lav-100 border-lav-300', icon: '⏳', label: 'بانتظار الموافقة' },
-  partial: { bg: 'bg-peach-100 border-peach-300', icon: '🌤️', label: 'جزئي' },
-  missed: { bg: 'bg-blush-50 border-blush-200', icon: '🌙', label: 'فاتك' },
-  rescheduled: { bg: 'bg-sky-50 border-sky-200', icon: '📅', label: 'تم تعويضه' },
-  today: { bg: 'bg-white border-gold-400 ring-4 ring-gold-100', icon: '✨', label: 'اليوم' },
-  upcoming: { bg: 'bg-white/70 border-lav-100', icon: '🗓️', label: 'قادم' },
-  rest: { bg: 'bg-cream-100 border-cream-200', icon: '🌸', label: 'راحة' },
-  before: { bg: 'bg-white/50 border-lav-50', icon: '·', label: 'قبل البداية' },
+export const STATE_STYLE: Record<DayState, { bg: string; icon: IconName | null; tone: string; label: string }> = {
+  done: { bg: 'bg-mint-100 border-mint-300', icon: 'done', tone: 'text-mint-500', label: 'مكتمل' },
+  awaiting: { bg: 'bg-lav-100 border-lav-300', icon: 'hourglass', tone: 'text-lav-500', label: 'بانتظار الموافقة' },
+  partial: { bg: 'bg-peach-100 border-peach-300', icon: 'cloud-sun', tone: 'text-gold-500', label: 'جزئي' },
+  missed: { bg: 'bg-blush-50 border-blush-200', icon: 'moon', tone: 'text-blush-400', label: 'فاتك' },
+  rescheduled: { bg: 'bg-sky-50 border-sky-200', icon: 'calendar-days', tone: 'text-gold-500', label: 'تم تعويضه' },
+  today: { bg: 'bg-white border-gold-400 ring-4 ring-gold-100', icon: 'sparkles', tone: 'text-gold-500', label: 'اليوم' },
+  upcoming: { bg: 'bg-white/70 border-lav-100', icon: 'calendar', tone: 'text-plum-faint', label: 'قادم' },
+  rest: { bg: 'bg-cream-100 border-cream-200', icon: 'flower', tone: 'text-blush-300', label: 'راحة' },
+  before: { bg: 'bg-white/50 border-lav-50', icon: null, tone: 'text-plum-faint', label: 'قبل البداية' },
 };
 
 export function WeekCalendar({ d, days, onPick, selected }: { d: Data; days: string[]; onPick?: (date: string) => void; selected?: string }) {
@@ -29,7 +30,7 @@ export function WeekCalendar({ d, days, onPick, selected }: { d: Data; days: str
             aria-label={`${DAY_SHORT[dow(x)]} ${fmtDate(x)}: ${STATE_STYLE[st].label}`}>
             <span className="text-[11px] font-semibold text-plum-soft">{DAY_SHORT[dow(x)]}</span>
             <span className="text-sm font-bold">{fmtDate(x, { day: 'numeric' })}</span>
-            <span className="my-0.5 text-base leading-none">{s.icon}</span>
+            <span className={`my-1 grid h-5 place-items-center ${s.tone}`}>{s.icon ? <I n={s.icon} size={17} /> : <span className="text-plum-faint">·</span>}</span>
             <span className="text-[10px] text-plum-faint">{p.minutes ? `${m}/${p.minutes}` : m ? `${m}` : '—'}</span>
           </button>
         );
@@ -42,7 +43,7 @@ export function Legend() {
   const keys: DayState[] = ['done', 'awaiting', 'partial', 'missed', 'rest'];
   return (
     <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-plum-soft">
-      {keys.map((k) => <span key={k}>{STATE_STYLE[k].icon} {STATE_STYLE[k].label}</span>)}
+      {keys.map((k) => <span key={k} className="inline-flex items-center gap-1"><span className={STATE_STYLE[k].tone}>{STATE_STYLE[k].icon && <I n={STATE_STYLE[k].icon!} size={13} />}</span>{STATE_STYLE[k].label}</span>)}
     </div>
   );
 }

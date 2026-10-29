@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
+import { I, IconBubble, type IconName } from './Icon';
 
 export function Card({ children, className = '' }: { children: ReactNode; className?: string }) {
   return <section className={`card animate-rise ${className}`}>{children}</section>;
@@ -27,7 +28,7 @@ export function Ring({ value, size = 112, stroke = 12, children }: { value: numb
       <svg width={size} height={size} className="-rotate-90">
         <defs>
           <linearGradient id="ringGrad" x1="0" x2="1" y1="0" y2="1">
-            <stop offset="0%" stopColor="#f2c46b" /><stop offset="100%" stopColor="#e05f8e" />
+            <stop offset="0%" stopColor="#f6a1c1" /><stop offset="100%" stopColor="#e05f8e" />
           </linearGradient>
         </defs>
         <circle cx={size / 2} cy={size / 2} r={r} stroke="#fde2ec" strokeWidth={stroke} fill="none" />
@@ -74,20 +75,20 @@ export function Field({ label, children, hint }: { label: string; children: Reac
   );
 }
 
-export function Empty({ emoji = '🌸', text }: { emoji?: string; text: string }) {
+export function Empty({ icon = 'flower', text }: { icon?: IconName; text: string }) {
   return (
     <div className="flex flex-col items-center gap-2 py-6 text-center text-plum-faint">
-      <span className="text-3xl animate-floaty">{emoji}</span>
+      <span className="animate-floaty"><IconBubble n={icon} size="h-12 w-12" icon={22} /></span>
       <p className="text-sm">{text}</p>
     </div>
   );
 }
 
-export function Stat({ label, value, sub, emoji, tone = 'lav' }: { label: string; value: ReactNode; sub?: ReactNode; emoji?: string; tone?: 'lav' | 'pink' | 'blue' | 'mint' | 'cream' }) {
+export function Stat({ label, value, sub, icon, tone = 'lav' }: { label: string; value: ReactNode; sub?: ReactNode; icon?: IconName; tone?: 'lav' | 'pink' | 'blue' | 'mint' | 'cream' }) {
   const bg = { lav: 'bg-blush-50', pink: 'bg-blush-100', blue: 'bg-sky-50', mint: 'bg-mint-100/60', cream: 'bg-gold-100/60' }[tone];
   return (
     <div className={`rounded-2xl ${bg} p-3`}>
-      <div className="flex items-center gap-1.5 text-xs font-semibold text-plum-soft">{emoji && <span>{emoji}</span>}{label}</div>
+      <div className="flex items-center gap-1.5 text-xs font-semibold text-plum-soft">{icon && <I n={icon} size={15} className="text-gold-500" />}{label}</div>
       <div className="mt-1 text-xl font-bold leading-tight">{value}</div>
       {sub && <div className="mt-0.5 text-xs text-plum-faint">{sub}</div>}
     </div>

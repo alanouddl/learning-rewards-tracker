@@ -16,4 +16,4 @@ export const STATUS_LABEL = {
 } as const;
 export const REWARD_STATUS = { pending: 'بانتظار الموافقة', approved: 'معتمدة', rejected: 'مرفوضة', paid: 'تم التسليم' } as const;
 export const REWARD_KIND = { daily: 'هدف يومي', weekly: 'هدف أسبوعي', milestone: 'مرحلة كورس', bonus: 'مكافأة خاصة' } as const;
-export const DIFFICULTY = { easy: 'سهل 😊', medium: 'متوسط 🙂', hard: 'صعب 😅' } as const;
+export const DIFFICULTY = { easy: 'سهل', medium: 'متوسط', hard: 'صعب' } as const;

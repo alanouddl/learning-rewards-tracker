@@ -1,3 +1,4 @@
+import { I } from '../../components/Icon';
 import { useMemo, useState } from 'react';
 import { useData } from '../../lib/store';
 import { addDays, daysBetween, fmtDate, todayStr, weekStart } from '../../lib/dates';
@@ -42,7 +43,7 @@ export default function GuardianAnalytics() {
 
   return (
     <>
-      <h1 className="section-title px-1 text-2xl">📊 التحليلات</h1>
+      <h1 className="section-title px-1 text-2xl"><I n="chart" /> التحليلات</h1>
       <Card>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           <label className="text-xs"><span className="label">من</span><input type="date" className="input" value={from} max={to} onChange={(e) => setFrom(e.target.value)} /></label>
@@ -61,14 +62,14 @@ export default function GuardianAnalytics() {
       </Card>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <Stat emoji="⏱️" label="الدراسة الفعلية" value={mins(totals.actual)} sub={`المعتمد ${mins(totals.approved)}`} tone="lav" />
-        <Stat emoji="🗓️" label="المخطط" value={mins(totals.planned)} sub={`الإنجاز ${pct(totals.actual, totals.planned)}%`} tone="blue" />
-        <Stat emoji="✅" label="أيام الهدف المكتملة" value={`${metDays} / ${plannedDays.length}`} sub={`الالتزام ${pct(metDays, plannedDays.length)}%`} tone="mint" />
-        <Stat emoji="📝" label="مهام منجزة" value={tasksDone} sub={`${checkins.length} جلسة`} tone="pink" />
+        <Stat icon="timer" label="الدراسة الفعلية" value={mins(totals.actual)} sub={`المعتمد ${mins(totals.approved)}`} tone="lav" />
+        <Stat icon="calendar" label="المخطط" value={mins(totals.planned)} sub={`الإنجاز ${pct(totals.actual, totals.planned)}%`} tone="blue" />
+        <Stat icon="done" label="أيام الهدف المكتملة" value={`${metDays} / ${plannedDays.length}`} sub={`الالتزام ${pct(metDays, plannedDays.length)}%`} tone="mint" />
+        <Stat icon="notebook" label="مهام منجزة" value={tasksDone} sub={`${checkins.length} جلسة`} tone="pink" />
       </div>
 
       <Card>
-        <h2 className="section-title mb-1">📈 الدقائق يومياً: المخطط مقابل الفعلي</h2>
+        <h2 className="section-title mb-1"><I n="trend" /> الدقائق يومياً: المخطط مقابل الفعلي</h2>
         <div className="mb-3 flex gap-4 text-xs text-plum-soft">
           <span className="flex items-center gap-1"><span className="inline-block h-2.5 w-2.5 rounded-sm bg-lav-200" />المخطط</span>
           <span className="flex items-center gap-1"><span className="inline-block h-2.5 w-2.5 rounded-sm bg-blush-400" />الفعلي</span>
@@ -91,7 +92,7 @@ export default function GuardianAnalytics() {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Card>
-          <h2 className="section-title mb-3">📅 الالتزام الأسبوعي</h2>
+          <h2 className="section-title mb-3"><I n="calendar-days" /> الالتزام الأسبوعي</h2>
           <ul className="space-y-2.5">
             {weeks.map((w) => (
               <li key={w.week}>
@@ -102,14 +103,14 @@ export default function GuardianAnalytics() {
           </ul>
         </Card>
         <Card>
-          <h2 className="section-title mb-3">📚 تقدم الكورسات</h2>
+          <h2 className="section-title mb-3"><I n="book" /> تقدم الكورسات</h2>
           <ul className="space-y-2.5">
             {d.courses.filter((c) => !c.archived).map((c) => {
               const ms = d.milestones.filter((m) => m.course_id === c.id);
               const time = d.checkins.filter((x) => x.course_id === c.id && x.status !== 'rejected').reduce((a, x) => a + x.minutes, 0);
               return (
                 <li key={c.id}>
-                  <div className="flex justify-between gap-2 text-sm"><span className="ltr truncate">{c.title}</span><span className="shrink-0 text-plum-soft">{c.progress}% • {mins(time)}{ms.length ? ` • 🏁 ${ms.filter((m) => m.status === 'approved').length}/${ms.length}` : ''}</span></div>
+                  <div className="flex justify-between gap-2 text-sm"><span className="ltr truncate">{c.title}</span><span className="shrink-0 text-plum-soft">{c.progress}% • {mins(time)}{ms.length ? ` • ${ms.filter((m) => m.status === 'approved').length}/${ms.length}` : ''}</span></div>
                   <ProgressBar value={c.progress} tone="lav" height="h-2" />
                 </li>
               );
@@ -117,7 +118,7 @@ export default function GuardianAnalytics() {
           </ul>
         </Card>
         <Card>
-          <h2 className="section-title mb-3">🧠 مستوى الصعوبة</h2>
+          <h2 className="section-title mb-3"><I n="brain" /> مستوى الصعوبة</h2>
           {diff.map(({ k, n }) => (
             <div key={k} className="mb-2">
               <div className="flex justify-between text-sm"><span>{DIFFICULTY[k]}</span><span>{n}</span></div>
@@ -126,7 +127,7 @@ export default function GuardianAnalytics() {
           ))}
         </Card>
         <Card>
-          <h2 className="section-title mb-3">💰 مكافآت الفترة</h2>
+          <h2 className="section-title mb-3"><I n="wallet" /> مكافآت الفترة</h2>
           <p className="text-sm">مجموع المكافآت (غير المرفوضة): <b>{sar(rewardsInRange.reduce((a, r) => a + r.amount, 0))}</b> في {rewardsInRange.length} مكافأة</p>
           <ul className="mt-2 max-h-48 space-y-1 overflow-y-auto text-xs">
             {rewardsInRange.map((r) => <li key={r.id} className="flex justify-between rounded-lg bg-cream-50 px-2 py-1"><span className="truncate">{r.title}</span><b>{sar(r.amount)}</b></li>)}
@@ -135,7 +136,7 @@ export default function GuardianAnalytics() {
       </div>
 
       <Card>
-        <h2 className="section-title mb-3">🕒 الجدول الزمني للنشاط</h2>
+        <h2 className="section-title mb-3"><I n="clock" /> الجدول الزمني للنشاط</h2>
         {checkins.length === 0 ? <Empty text="لا يوجد نشاط في هذه الفترة" /> : (
           <ol className="space-y-2">
             {checkins.map((c) => (
@@ -143,7 +144,7 @@ export default function GuardianAnalytics() {
                 <div className="flex flex-wrap justify-between gap-2"><b>{fmtDate(c.study_date, { weekday: 'short', day: 'numeric', month: 'short' })} — {c.minutes} د</b>
                   <span className="ltr text-xs text-plum-soft">{courseName(d.courses, c.course_id)}</span></div>
                 <p className="mt-1">{c.finished}</p>
-                {c.learned && <p className="text-xs text-plum-soft">💡 {c.learned}</p>}
+                {c.learned && <p className="text-xs text-plum-soft"><I n="idea" /> {c.learned}</p>}
               </li>
             ))}
           </ol>
