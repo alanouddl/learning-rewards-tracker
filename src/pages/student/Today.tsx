@@ -60,7 +60,7 @@ export default function StudentToday() {
         <Sparkle className="absolute right-6 top-6 h-3 w-3 animate-twinkle" color="#ec5f94" />
         <div className="w-full flex-1 text-center sm:text-right">
           <p className="eyebrow">{fmtDate(today, { weekday: 'long', day: 'numeric', month: 'long' })}</p>
-          <h1 className="mt-2 text-3xl font-extrabold leading-snug text-plum sm:text-4xl">{greeting()} <span className="text-gold-500">يا بطلة!</span></h1>
+          <h1 className="mt-2 text-3xl font-extrabold leading-snug text-plum sm:text-4xl">{greeting()} <span className="text-gold-500">يا {d.me.display_name || 'بطلة'}!</span></h1>
           <p className="mt-1 text-sm text-plum-soft">{motivationFor(today)}</p>
           <p className="mt-3 text-lg font-bold text-plum">جمعتِ <span className="text-gold-500">{sar(s.earned)}</span> لجهاز أحلامك</p>
           <p className="mt-1 text-sm text-plum-soft">
