@@ -38,3 +38,25 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+  verify:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Smoke-test the live site and database
+        run: |
+          set -e
+          SITE="https://alanouddl.github.io/learning-rewards-tracker/"
+          URL=$(grep VITE_SUPABASE_URL .env.production | cut -d= -f2)
+          KEY=$(grep VITE_SUPABASE_ANON_KEY .env.production | cut -d= -f2)
+          sleep 20
+          html=$(curl -fsSL "$SITE")
+          echo "$html" | grep -q 'رحلتي' && echo "OK: site is live at $SITE"
+          js=$(echo "$html" | grep -o 'assets/index-[^"]*\.js' | head -1)
+          curl -fsSL "$SITE$js" | grep -q "$URL" && echo "OK: site bundle points at $URL"
+          code=$(curl -s -o /dev/null -w '%{http_code}' "$URL/auth/v1/settings" -H "apikey: $KEY")
+          echo "auth settings HTTP $code"; test "$code" = 200
+          curl -s "$URL/auth/v1/settings" -H "apikey: $KEY" | python3 -c 'import json,sys; d=json.load(sys.stdin); print("signup disabled:", d.get("disable_signup"))'
+          body=$(curl -s "$URL/rest/v1/settings?select=id" -H "apikey: $KEY")
+          echo "anonymous read of settings -> $body"
+          echo "$body" | grep -q '"id"' && { echo "FAIL: anonymous visitor can read data"; exit 1; } || echo "OK: anonymous visitors cannot read data"
