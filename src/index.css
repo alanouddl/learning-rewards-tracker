@@ -1,0 +1,47 @@
+@import '@fontsource/ibm-plex-sans-arabic/400.css';
+@import '@fontsource/ibm-plex-sans-arabic/500.css';
+@import '@fontsource/ibm-plex-sans-arabic/600.css';
+@import '@fontsource/ibm-plex-sans-arabic/700.css';
+@import '@fontsource/el-messiri/600.css';
+@import '@fontsource/el-messiri/700.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body { -webkit-tap-highlight-color: transparent; overflow-x: clip; max-width: 100%; }
+  body {
+    @apply font-sans text-plum antialiased;
+    background:
+      radial-gradient(1200px 600px at 100% -10%, #ffe4ee 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 10%, #e0f0fd 0%, transparent 55%),
+      radial-gradient(900px 700px at 50% 120%, #ece4ff 0%, transparent 60%),
+      #fffdf8;
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+  h1, h2, h3 { @apply font-display; }
+  input, textarea, select { @apply text-plum; }
+  :focus-visible { outline: 3px solid #c6b3f7; outline-offset: 2px; }
+  .ltr { direction: ltr; unicode-bidi: isolate; }
+  .bidi { unicode-bidi: plaintext; }
+}
+
+@layer components {
+  .card { @apply min-w-0 rounded-3xl bg-white/80 backdrop-blur border border-white shadow-soft p-4 sm:p-5; }
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-2.5 font-semibold transition active:scale-[.97] disabled:opacity-50 disabled:pointer-events-none; }
+  .btn-primary { @apply btn text-white bg-gradient-to-l from-blush-400 to-lav-500 shadow-glow hover:brightness-105; }
+  .btn-soft { @apply btn bg-lav-100 text-lav-600 hover:bg-lav-200; }
+  .btn-ghost { @apply btn bg-transparent text-plum-soft hover:bg-lav-50; }
+  .btn-danger { @apply btn bg-blush-100 text-blush-500 hover:bg-blush-200; }
+  .btn-mint { @apply btn bg-mint-100 text-mint-500 hover:bg-mint-300/50; }
+  .input { @apply w-full rounded-2xl border border-lav-200 bg-white/90 px-3.5 py-2.5 placeholder:text-plum-faint focus:border-lav-400 focus:outline-none focus:ring-4 focus:ring-lav-100; }
+  .label { @apply mb-1 block text-sm font-semibold text-plum-soft; }
+  .chip { @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold; }
+  .section-title { @apply font-display text-lg font-bold text-plum flex items-center gap-2; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
