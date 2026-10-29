@@ -38,15 +38,13 @@ In **Authentication → Users → Add user → Create new user** (tick **Auto Co
 
 ### C. Publish the website (GitHub Pages, free)
 1. Push this repository to GitHub.
-2. Repo **Settings → Secrets and variables → Actions → Variables** tab. Add two **variables**:
-   - `VITE_SUPABASE_URL` = Supabase **Project Settings → API → Project URL**
-   - `VITE_SUPABASE_ANON_KEY` = the **anon / public** key (safe to publish; the database rules protect the data)
+2. Put your Supabase **Project URL** and **anon / public** key in [`.env.production`](.env.production). The anon key is safe to publish; the database rules protect the data.
 3. Repo **Settings → Pages → Source: GitHub Actions**.
 4. **Actions** tab → "Deploy to GitHub Pages" → **Run workflow** (it also runs on every push to `main`).
 5. Your link: `https://<your-github-username>.github.io/<repo-name>/`
 6. Back in Supabase: **Authentication → URL Configuration → Site URL** = that link.
 
-**Alternatives:** Netlify or Vercel. Import the repo, build command `npm run build`, output folder `dist`, and add the same two environment variables.
+**Alternatives:** Netlify or Vercel. Import the repo, build command `npm run build`, output folder `dist`, and `.env.production` is picked up automatically.
 
 ### Local development
 ```bash

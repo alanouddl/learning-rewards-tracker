@@ -23,11 +23,11 @@ create extension if not exists pgcrypto;
 -- Helpers
 -- ---------------------------------------------------------------------
 create or replace function public.riyadh_today() returns date
-language sql stable as $$ select (now() at time zone 'Asia/Riyadh')::date $$;
+language sql stable set search_path = public as $$ select (now() at time zone 'Asia/Riyadh')::date $$;
 
 -- Weeks start on Sunday.
 create or replace function public.week_start(d date) returns date
-language sql immutable as $$ select d - extract(dow from d)::int $$;
+language sql immutable set search_path = public as $$ select d - extract(dow from d)::int $$;
 
 -- ---------------------------------------------------------------------
 -- Profiles & roles
@@ -267,14 +267,14 @@ create table if not exists public.reward_events (
   created_at timestamptz not null default now()
 );
 
-create or replace function public.forbid_change() returns trigger language plpgsql as $$
+create or replace function public.forbid_change() returns trigger language plpgsql set search_path = public as $$
 begin raise exception 'This ledger is append-only'; end $$;
 drop trigger if exists reward_events_immutable on public.reward_events;
 create trigger reward_events_immutable before update or delete on public.reward_events
   for each row execute function public.forbid_change();
 
 -- amounts / identity of a reward never change; only status moves forward
-create or replace function public.guard_reward_update() returns trigger language plpgsql as $$
+create or replace function public.guard_reward_update() returns trigger language plpgsql set search_path = public as $$
 begin
   if tg_op = 'DELETE' then raise exception 'Rewards cannot be deleted'; end if;
   if new.amount <> old.amount or new.kind <> old.kind
@@ -804,6 +804,19 @@ grant execute on all functions in schema public to authenticated;
 revoke execute on function public._create_reward(text, numeric, text, date, uuid, uuid, text, text) from authenticated;
 revoke execute on function public.notify(text, text, text, text) from authenticated;
 revoke execute on function public._celebrate_thresholds(numeric, numeric) from authenticated;
+
+-- trigger functions and internal accounting helpers are not part of the API
+revoke execute on function public.check_allocations() from authenticated;
+revoke execute on function public.guard_milestone() from authenticated;
+revoke execute on function public.handle_new_user() from authenticated;
+revoke execute on function public.on_course_insert() from authenticated;
+revoke execute on function public.forbid_change() from authenticated;
+revoke execute on function public.guard_reward_update() from authenticated;
+revoke execute on function public.committed_total() from authenticated;
+revoke execute on function public.consistency_pool() from authenticated;
+revoke execute on function public.consistency_used() from authenticated;
+revoke execute on function public.earned_total() from authenticated;
+revoke execute on function public.planned_minutes(date) from authenticated;
 
 -- Guardian edits plan tables directly; everything else goes through RPCs.
 grant insert, update, delete on public.categories, public.courses, public.milestones,
