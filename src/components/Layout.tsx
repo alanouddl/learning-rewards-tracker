@@ -34,9 +34,8 @@ export function Layout({ children }: { children: ReactNode }) {
     <div className="mx-auto flex min-h-screen max-w-6xl flex-col px-3 pb-28 pt-3 sm:px-5 sm:pb-10">
       <header className="relative flex items-center justify-between gap-3 rounded-full bg-white/80 px-4 py-2.5 shadow-soft backdrop-blur sm:px-6">
         <HeaderDecor />
-        <div className="relative flex items-center gap-2">
+        <div className="relative flex items-center">
           <Logo size="text-2xl" />
-          <span className="hidden text-xs text-plum-faint sm:inline">{d.me.role === 'guardian' ? 'ولي الأمر' : d.me.display_name}</span>
         </div>
         {/* desktop links: active one is pink with a dot underneath */}
         <nav className="relative hidden items-center gap-1 md:flex">
@@ -89,13 +88,10 @@ export function Layout({ children }: { children: ReactNode }) {
   );
 }
 
-/** Handwritten logo with a small heart, as in the reference. */
+/** The app's word-mark. */
 export function Logo({ size = 'text-5xl' }: { size?: string }) {
   return (
-    <span className="inline-flex items-center gap-1 text-gold-500">
-      <span className={`${size} font-extrabold leading-none`}>رحلتي</span>
-      <I n="heart" size={18} className="-mt-3" />
-    </span>
+    <span className={`${size} font-extrabold leading-none text-gold-500`}>رحلتي</span>
   );
 }
 
