@@ -3,6 +3,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { Bell } from 'lucide-react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { BUILD } from '../lib/autoUpdate';
 import { useData } from '../lib/store';
 import { fmtDateTime } from '../lib/dates';
 import { HeaderDecor } from './Decor';
@@ -66,6 +67,7 @@ export function Layout({ children }: { children: ReactNode }) {
       </nav>
 
       <main className="mt-5 flex-1 space-y-5">{children}</main>
+      <p className="mt-6 text-center text-[10px] text-plum-faint">رحلتي · نسخة {BUILD}</p>
 
       {/* mobile bottom nav */}
       <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-blush-100 bg-white/95 px-2 pb-[max(env(safe-area-inset-bottom),8px)] pt-1.5 shadow-[0_-8px_30px_-12px_rgba(194,74,119,.35)] backdrop-blur sm:hidden">

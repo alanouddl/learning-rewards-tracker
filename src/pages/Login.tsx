@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { friendlyError, supabase, toLoginEmail } from '../lib/supabase';
 import { DeskScene, Flower, Sparkle, Star } from '../components/Decor';
 import { Logo } from '../components/Layout';
+import { BUILD } from '../lib/autoUpdate';
 
 export default function Login() {
   const [user, setUser] = useState('');
@@ -43,6 +44,7 @@ export default function Login() {
           {err && <p className="rounded-2xl bg-blush-50 p-2.5 text-center text-sm text-blush-500">{err}</p>}
           <button className="btn-primary w-full py-3" disabled={busy}>{busy ? '…' : 'دخول'}</button>
           <p className="text-center text-xs text-plum-faint"><I n="lock" /> موقع خاص للعائلة فقط</p>
+          <p className="text-center text-[10px] text-plum-faint">نسخة {BUILD}</p>
         </form>
       </div>
     </div>
