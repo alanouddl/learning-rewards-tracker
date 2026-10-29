@@ -1,0 +1,24 @@
+name: One-time login check
+on: push
+jobs:
+  login:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Log in with the throwaway smoketest account (it has no access)
+        run: |
+          set -e
+          URL=$(grep VITE_SUPABASE_URL .env.production | cut -d= -f2)
+          KEY=$(grep VITE_SUPABASE_ANON_KEY .env.production | cut -d= -f2)
+          res=$(curl -s "$URL/auth/v1/token?grant_type=password" -H "apikey: $KEY" -H 'content-type: application/json' \
+            -d '{"email":"smoketest@family.invalid","password":"Pearl-Rose-2370"}')
+          tok=$(echo "$res" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("access_token",""))')
+          test -n "$tok" || { echo "LOGIN FAILED: $res"; exit 1; }
+          role=$(curl -s -X POST "$URL/rest/v1/rpc/my_role" -H "apikey: $KEY" -H "Authorization: Bearer $tok" -H 'content-type: application/json' -d '{}')
+          echo "role=$role"; test "$role" = "null"
+          n=$(curl -s "$URL/rest/v1/courses?select=id" -H "apikey: $KEY" -H "Authorization: Bearer $tok")
+          echo "courses visible to outsider: $n"; test "$n" = "[]"
+          bad=$(curl -s "$URL/auth/v1/token?grant_type=password" -H "apikey: $KEY" -H 'content-type: application/json' \
+            -d '{"email":"guardian@family.invalid","password":"wrong-password"}')
+          echo "$bad" | grep -qi invalid
+          echo "ALL LOGIN CHECKS PASSED"
