@@ -55,7 +55,7 @@ jobs:
           js=$(echo "$html" | grep -o 'assets/index-[^"]*\.js' | head -1)
           curl -fsSL "$SITE$js" | grep -q "$URL" && echo "OK: site bundle points at $URL"
           css=$(echo "$html" | grep -o 'assets/index-[^"]*\.css' | head -1)
-          curl -fsSL "$SITE$css" | grep -qi "d6336f" && echo "OK: live site serves the current pink theme ($css)"
+          curl -fsSL "$SITE$css" | grep -qi "e0598d" && echo "OK: live site serves the current Pastel Rainbow theme ($css)"
           code=$(curl -s -o /dev/null -w '%{http_code}' "$URL/auth/v1/settings" -H "apikey: $KEY")
           echo "auth settings HTTP $code"; test "$code" = 200
           curl -s "$URL/auth/v1/settings" -H "apikey: $KEY" | python3 -c 'import json,sys; d=json.load(sys.stdin); print("signup disabled:", d.get("disable_signup"))'
