@@ -30,8 +30,8 @@ export function I({ n, className = '', size = 18 }: { n: IconName; className?: s
 }
 
 /** Icon inside a soft pink circle, used for headings, stats and badges. */
-export function IconBubble({ n, tone = 'pink', size = 'h-9 w-9', icon = 18 }: { n: IconName; tone?: 'pink' | 'gold' | 'mint' | 'muted'; size?: string; icon?: number }) {
-  const t = { pink: 'bg-blush-100 text-gold-500', gold: 'bg-gold-100 text-gold-500', mint: 'bg-mint-100 text-mint-500', muted: 'bg-cream-200 text-plum-faint' }[tone];
+export function IconBubble({ n, tone = 'pink', size = 'h-9 w-9', icon = 18 }: { n: IconName; tone?: 'pink' | 'gold' | 'mint' | 'lilac' | 'blue' | 'butter' | 'muted'; size?: string; icon?: number }) {
+  const t = { pink: 'bg-blush-100 text-blush-500', gold: 'bg-blush-100 text-blush-500', mint: 'bg-mint-100 text-mint-500', lilac: 'bg-lav-100 text-lav-500', blue: 'bg-sky-100 text-sky-400', butter: 'bg-cream-100 text-[#c99a06]', muted: 'bg-[#f3f1f6] text-plum-faint' }[tone];
   return <span className={`grid shrink-0 place-items-center rounded-2xl ${size} ${t}`}><I n={n} size={icon} /></span>;
 }
 
@@ -46,6 +46,15 @@ export function categoryIcon(name: string): IconName {
   if (s.includes('time') || s.includes('habit')) return 'alarm';
   return 'book';
 }
+
+export type Tone = 'pink' | 'lilac' | 'mint' | 'butter' | 'blue';
+const TONES: Tone[] = ['pink', 'lilac', 'mint', 'butter', 'blue'];
+/** A stable pastel colour per subject. */
+export function categoryTone(name: string): Tone {
+  const order: [string, Tone][] = [['english', 'pink'], ['program', 'lilac'], ['computer', 'blue'], ['financ', 'mint'], ['communic', 'butter'], ['time', 'lilac']];
+  return order.find(([k]) => name.toLowerCase().includes(k))?.[1] ?? 'pink';
+}
+export const toneAt = (i: number): Tone => TONES[i % TONES.length];
 
 // Text that comes from the database (notifications, messages) may still contain emoji: strip it for display.
 const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B50}\u{231A}-\u{23FF}\u{1F000}-\u{1F2FF}][\u{FE0F}\u{200D}\u{1F3FB}-\u{1F3FF}\u{2640}\u{2642}]*/gu;

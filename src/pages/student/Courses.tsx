@@ -1,4 +1,4 @@
-import { I, categoryIcon } from '../../components/Icon';
+import { I, IconBubble, categoryIcon, categoryTone } from '../../components/Icon';
 import { useState } from 'react';
 import { supabase, friendlyError } from '../../lib/supabase';
 import { useData } from '../../lib/store';
@@ -38,7 +38,7 @@ export default function StudentCourses() {
               <div className="flex gap-3">
                 {c.thumbnail_url
                   ? <img src={c.thumbnail_url} alt="" className="h-16 w-16 shrink-0 rounded-2xl object-cover" referrerPolicy="no-referrer" />
-                  : <div className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-blush-100 to-lav-100 text-blush-500"><I n={categoryIcon(cat?.name ?? '')} size={28} /></div>}
+                  : <IconBubble n={categoryIcon(cat?.name ?? '')} tone={categoryTone(cat?.name ?? '')} size="h-16 w-16" icon={28} />}
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-1.5">
                     <span className={`chip ${STATUS_CHIP[c.status]}`}>{STATUS_LABEL[c.status]}</span>

@@ -1,7 +1,8 @@
 import { I } from '../components/Icon';
 import { useState } from 'react';
 import { friendlyError, supabase, toLoginEmail } from '../lib/supabase';
-import { DeskScene, Flower, Sparkle, Star } from '../components/Decor';
+import { Flower, Sparkle, Star } from '../components/Decor';
+import { SavingsJar } from '../components/SavingsJar';
 import { Logo } from '../components/Layout';
 import { BUILD } from '../lib/autoUpdate';
 
@@ -28,8 +29,8 @@ export default function Login() {
         <Sparkle className="absolute right-8 top-24 h-4 w-4 animate-twinkle [animation-delay:.6s]" />
         <form onSubmit={submit} className="card relative space-y-4 !p-6">
           <div className="text-center">
-            <DeskScene className="mx-auto -mt-2 w-56" />
-            <h1 className="pt-1"><Logo size="text-6xl" /></h1>
+            <div className="flex justify-center"><SavingsJar value={0.35} size={84} /></div>
+            <h1 className="pt-1"><Logo size="text-4xl" /></h1>
             <p className="mt-2 eyebrow">LEARN · GROW · SHINE</p>
             <p className="mt-1 text-sm text-plum-soft">خطوة كل يوم نحو حلمك <I n="sparkles" /></p>
           </div>

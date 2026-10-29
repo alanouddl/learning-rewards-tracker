@@ -1,4 +1,4 @@
-import { I, IconBubble } from '../../components/Icon';
+import { I, IconBubble, toneAt } from '../../components/Icon';
 import { useData } from '../../lib/store';
 import { fmtDate, fmtDateTime } from '../../lib/dates';
 import { pct, REWARD_KIND, REWARD_STATUS, sar } from '../../lib/format';
@@ -30,11 +30,11 @@ export default function StudentRewards() {
   return (
     <>
       <MoneyCelebration />
-      <section className="relative isolate overflow-hidden rounded-3xl bg-blush-100 p-5 shadow-soft animate-rise">
-        <div className="pointer-events-none absolute -bottom-20 -right-10 -z-10 h-56 w-56 rounded-full bg-blush-200/70" aria-hidden="true" />
+      <section className="relative isolate overflow-hidden rounded-[30px] bg-white p-5 shadow-soft animate-rise">
+        <div className="pointer-events-none absolute -bottom-20 -right-10 -z-10 h-56 w-56 rounded-full bg-lav-100" aria-hidden="true" />
         <Star className="absolute left-6 top-6 h-5 w-5 animate-twinkle" color="#f6a1c1" />
         <Sparkle className="absolute bottom-8 right-1/2 h-4 w-4 animate-twinkle [animation-delay:1s]" color="#fff" />
-        <p className="relative text-center eyebrow">MY DREAM DEVICE</p>
+        <p className="relative text-center"><span className="eyebrow">هدفك</span></p>
         <h1 className="relative mt-1 text-center"><span className="script text-3xl sm:text-4xl">رحلتك لجهاز أحلامك</span> <span className="text-2xl"><I n="laptop" /><I n="sparkles" /></span></h1>
         <div className="mt-4 flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-10">
           <div className="animate-floaty"><SavingsJar value={s.earned / s.total_budget} pending={s.pending / s.total_budget} size={170} /></div>
@@ -45,7 +45,7 @@ export default function StudentRewards() {
               <div className="text-sm text-plum-soft">من {sar(s.total_budget)}</div>
             </div>
             <ProgressBar value={pct(s.earned, s.total_budget)} height="h-4" />
-            <div className="rounded-2xl bg-white p-3 text-sm shadow-soft">
+            <div className="rounded-2xl bg-cream-100 p-3 text-sm">
               <I n="hourglass" /> باقي <b>{sar(remaining)}</b> وتوصلين للهدف!
               {nextThreshold && <div className="mt-1 text-xs text-plum-soft">الإنجاز القادم: {nextThreshold} ريال (باقي {sar(nextThreshold - s.earned)})</div>}
             </div>
@@ -63,9 +63,9 @@ export default function StudentRewards() {
       <Card>
         <h2 className="section-title mb-3"><I n="medal" /> أوسمتي</h2>
         <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
-          {bs.map((b) => (
-            <div key={b.id} title={b.hint} className={`flex flex-col items-center rounded-2xl p-2 text-center transition ${b.earned ? 'bg-gradient-to-br from-blush-50 to-lav-100' : 'bg-cream-50 opacity-45 grayscale'}`}>
-              <span className={b.earned ? 'animate-floaty' : ''}><IconBubble n={b.icon} tone={b.earned ? 'gold' : 'muted'} size="h-12 w-12" icon={22} /></span>
+          {bs.map((b, i) => (
+            <div key={b.id} title={b.hint} className={`flex flex-col items-center rounded-2xl p-2 text-center transition ${b.earned ? 'bg-white shadow-soft' : 'bg-[#f7f5fa] opacity-60'}`}>
+              <span className={b.earned ? 'animate-floaty' : ''}><IconBubble n={b.icon} tone={b.earned ? toneAt(i) : 'muted'} size="h-12 w-12" icon={22} /></span>
               <span className="mt-1 text-xs font-semibold">{b.title}</span>
               <span className="text-[10px] text-plum-faint">{b.hint}</span>
             </div>

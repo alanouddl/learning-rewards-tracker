@@ -35,7 +35,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <header className="relative flex items-center justify-between gap-3 rounded-full bg-white/80 px-4 py-2.5 shadow-soft backdrop-blur sm:px-6">
         <HeaderDecor />
         <div className="relative flex items-center gap-2">
-          <Logo size="text-3xl" />
+          <Logo size="text-2xl" />
           <span className="hidden text-xs text-plum-faint sm:inline">{d.me.role === 'guardian' ? 'ولي الأمر' : d.me.display_name}</span>
         </div>
         {/* desktop links: active one is pink with a dot underneath */}
@@ -93,7 +93,7 @@ export function Layout({ children }: { children: ReactNode }) {
 export function Logo({ size = 'text-5xl' }: { size?: string }) {
   return (
     <span className="inline-flex items-center gap-1 text-gold-500">
-      <span className={`font-script ${size} font-bold leading-none`}>رحلتي</span>
+      <span className={`${size} font-extrabold leading-none`}>رحلتي</span>
       <I n="heart" size={18} className="-mt-3" />
     </span>
   );

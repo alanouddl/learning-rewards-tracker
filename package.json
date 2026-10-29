@@ -9,10 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fontsource/amiri": "5.2.7",
-    "@fontsource/aref-ruqaa": "5.2.7",
-    "@fontsource/el-messiri": "5.1.0",
-    "@fontsource/ibm-plex-sans-arabic": "5.1.0",
+    "@fontsource/almarai": "5.1.0",
     "@supabase/supabase-js": "2.45.4",
     "canvas-confetti": "1.9.3",
     "lucide-react": "0.454.0",

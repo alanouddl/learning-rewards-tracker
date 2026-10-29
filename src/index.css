@@ -1,14 +1,6 @@
-@import '@fontsource/ibm-plex-sans-arabic/400.css';
-@import '@fontsource/ibm-plex-sans-arabic/500.css';
-@import '@fontsource/ibm-plex-sans-arabic/600.css';
-@import '@fontsource/ibm-plex-sans-arabic/700.css';
-@import '@fontsource/el-messiri/600.css';
-@import '@fontsource/el-messiri/700.css';
-@import '@fontsource/aref-ruqaa/400.css';
-@import '@fontsource/aref-ruqaa/700.css';
-@import '@fontsource/amiri/400.css';
-@import '@fontsource/amiri/700.css';
-@import '@fontsource/amiri/400-italic.css';
+@import '@fontsource/almarai/400.css';
+@import '@fontsource/almarai/700.css';
+@import '@fontsource/almarai/800.css';
 
 @tailwind base;
 @tailwind components;
@@ -19,10 +11,12 @@
   body {
     @apply font-sans text-plum antialiased;
     background:
-      radial-gradient(900px 500px at 100% -5%, #fde3ed 0%, transparent 60%),
-      radial-gradient(800px 600px at -10% 40%, #fff0f5 0%, transparent 60%),
-      radial-gradient(1000px 600px at 50% 110%, #fbd3e1 0%, transparent 60%),
-      #fff8fb;
+      radial-gradient(700px 420px at 100% -5%, #fde8ef 0%, transparent 60%),
+      radial-gradient(600px 420px at -10% 20%, #def2fd 0%, transparent 60%),
+      radial-gradient(700px 500px at 105% 70%, #ede6fb 0%, transparent 60%),
+      radial-gradient(600px 400px at -5% 100%, #e3f4f2 0%, transparent 60%),
+      radial-gradient(500px 300px at 50% 110%, #fff8e1 0%, transparent 60%),
+      #fbf9ff;
     background-attachment: fixed;
     min-height: 100vh;
   }
@@ -47,7 +41,7 @@
   .section-title { @apply font-display text-xl font-bold text-plum flex items-center gap-2; }
   .script { @apply font-script text-blush-500; }
   .eyebrow { @apply inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.22em] text-gold-500; }
-  .accent { @apply font-display italic text-gold-500; }
+  .accent { @apply font-display text-gold-500; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -55,4 +49,4 @@
 }
 
 /* icons inside headings pick up the accent pink */
-.section-title > svg { color: #d6336f; }
+.section-title > svg { color: #9479cc; }

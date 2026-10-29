@@ -1,4 +1,4 @@
-import { I, IconBubble, categoryIcon } from '../../components/Icon';
+import { I, IconBubble, categoryIcon, categoryTone } from '../../components/Icon';
 import { useState } from 'react';
 import { supabase, friendlyError } from '../../lib/supabase';
 import { useData } from '../../lib/store';
@@ -28,7 +28,7 @@ export default function GuardianCourses() {
         const list = courses.filter((c) => c.category_id === cat.id);
         return (
           <Card key={cat.id}>
-            <h2 className="section-title mb-3"><IconBubble n={categoryIcon(cat.name)} size="h-8 w-8" icon={16} /><span className="ltr">{cat.name}</span><span className="chip bg-lav-50 text-plum-soft">{sar(cat.budget)}</span></h2>
+            <h2 className="section-title mb-3"><IconBubble n={categoryIcon(cat.name)} tone={categoryTone(cat.name)} size="h-8 w-8" icon={16} /><span className="ltr">{cat.name}</span><span className="chip bg-lav-50 text-plum-soft">{sar(cat.budget)}</span></h2>
             {list.length === 0 && <p className="text-sm text-plum-faint">لا يوجد كورس في هذا المجال.</p>}
             <div className="space-y-2">
               {list.map((c) => {
@@ -112,7 +112,7 @@ function Allocation() {
           return (
             <div key={c.id} className="rounded-2xl bg-cream-50 p-3">
               <div className="grid grid-cols-[3rem_1fr] gap-2 sm:grid-cols-[3rem_1fr_7rem_7rem_auto]">
-                <span className="grid place-items-center"><IconBubble n={categoryIcon(String(val(c, 'name')))} size="h-10 w-10" /></span>
+                <span className="grid place-items-center"><IconBubble n={categoryIcon(String(val(c, 'name')))} tone={categoryTone(String(val(c, 'name')))} size="h-10 w-10" /></span>
                 <input className="input ltr" value={val(c, 'name')} onChange={(e) => set(c.id, 'name', e.target.value)} aria-label="اسم المجال" />
                 <label className="text-xs"><span className="text-plum-soft">الإجمالي (ر.س)</span>
                   <input className="input !py-1.5" type="number" min={0} value={val(c, 'budget')} onChange={(e) => set(c.id, 'budget', e.target.value)} /></label>
