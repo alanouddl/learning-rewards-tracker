@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState, ty
 import { supabase } from './supabase';
 import { noEmoji } from '../components/Icon';
 import type {
+  English, EnglishStage, StageCourse, Objective, Lesson, WeekPlan, AssessItem, Assessment, AssessResult, SkillRating,
   Category, Checkin, Course, Milestone, Notification, PlanChange, Profile, ProgressUpdate, Reward,
   RewardEvent, ScheduleDay, Settings, Summary, Task, TaskCompletion, TimerState,
 } from './types';
@@ -25,6 +26,7 @@ export type Data = {
   summary: Summary;
   timer: TimerState | null;
   clockOffsetMs: number; // server time - local time
+  english: English;
 };
 
 type Ctx = { data: Data | null; error: string | null; refresh: () => Promise<void> };
@@ -37,6 +39,26 @@ async function q<T>(p: PromiseLike<{ data: T | null; error: { message: string } 
   const { data, error } = await p;
   if (error) throw new Error(error.message);
   return data as T;
+}
+
+// The English journey tables are optional: before english.sql is applied they simply come back empty.
+async function soft<T>(p: PromiseLike<{ data: T[] | null; error: { message: string } | null }>): Promise<T[]> {
+  const { data, error } = await p;
+  return error ? [] : (data ?? []);
+}
+async function loadEnglish(): Promise<English> {
+  const [stages, stageCourses, objectives, lessons, plans, items, assessments, results, skills] = await Promise.all([
+    soft<EnglishStage>(supabase.from('english_stages').select('*').order('id')),
+    soft<StageCourse>(supabase.from('english_stage_courses').select('*').order('sort')),
+    soft<Objective>(supabase.from('english_objectives').select('*').order('sort')),
+    soft<Lesson>(supabase.from('english_lessons').select('*').order('sort').order('created_at')),
+    soft<WeekPlan>(supabase.from('english_week_plan').select('*').order('dow')),
+    soft<AssessItem>(supabase.from('english_assessment_items').select('*').order('sort')),
+    soft<Assessment>(supabase.from('english_assessments').select('*').order('created_at', { ascending: false })),
+    soft<AssessResult>(supabase.from('english_assessment_results').select('*')),
+    soft<SkillRating>(supabase.from('english_skill_ratings').select('*').order('created_at')),
+  ]);
+  return { stages, stageCourses, objectives, lessons, plans, items, assessments, results, skills };
 }
 
 async function loadAll(userId: string): Promise<Data> {
@@ -59,6 +81,7 @@ async function loadAll(userId: string): Promise<Data> {
     q<Summary>(supabase.rpc('reward_summary')),
     q<TimerState>(supabase.rpc('get_timer')),
   ]);
+  const english = await loadEnglish();
   const me = profiles.find((p) => p.id === userId);
   if (!me) throw new Error('NO_PROFILE');
   const s = summary as unknown as Record<string, number>;
@@ -79,6 +102,7 @@ async function loadAll(userId: string): Promise<Data> {
     summary: summary as Summary,
     timer,
     clockOffsetMs: timer ? new Date(timer.server_now).getTime() - Date.now() : 0,
+    english,
   };
 }
 

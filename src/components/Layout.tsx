@@ -13,6 +13,7 @@ type NavItem = { to: string; label: string; icon: IconName };
 const STUDENT_NAV: NavItem[] = [
   { to: '/', label: 'اليوم', icon: 'tulip' },
   { to: '/week', label: 'أسبوعي', icon: 'calendar' },
+  { to: '/english', label: 'الإنجليزي', icon: 'languages' },
   { to: '/courses', label: 'كورساتي', icon: 'book' },
   { to: '/rewards', label: 'حصالتي', icon: 'wallet' },
   { to: '/history', label: 'إنجازاتي', icon: 'notebook' },
@@ -20,6 +21,7 @@ const STUDENT_NAV: NavItem[] = [
 const GUARDIAN_NAV: NavItem[] = [
   { to: '/g', label: 'الرئيسية', icon: 'house' },
   { to: '/g/review', label: 'المراجعة', icon: 'done' },
+  { to: '/g/english', label: 'الإنجليزي', icon: 'languages' },
   { to: '/g/courses', label: 'الكورسات', icon: 'book' },
   { to: '/g/schedule', label: 'الجدول', icon: 'calendar' },
   { to: '/g/rewards', label: 'المكافآت', icon: 'wallet' },

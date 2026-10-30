@@ -1,7 +1,7 @@
 import {
   AlarmClock, BarChart3, BicepsFlexed, BookOpen, Brain, Calculator, Calendar, CalendarCheck, CalendarDays, Check,
   CircleCheck, Clock, Cloud, CloudSun, ClipboardList, Coins, Crown, ExternalLink, Flag, Flame, Flower, Flower2, FolderOpen,
-  Frown, Gem, Gift, GraduationCap, Hand, Heart, Hourglass, House, Image, Languages, Laptop, Lightbulb, Link, Lock,
+  Frown, Gem, Gift, GraduationCap, Hand, Headphones, Heart, Hourglass, Map as MapIcon, House, Image, Languages, Laptop, Lightbulb, Link, Lock,
   Medal, Meh, MessageCircle, MessageCircleHeart, Mic, Moon, NotebookPen, Paperclip, PartyPopper, Pause, PenLine, Pencil,
   PiggyBank, Play, Puzzle, Rainbow, Receipt, Rocket, ScrollText, Settings, Shield, Smile, Sparkle, Sparkles, Sprout, Star,
   Sun, Target, Timer, Trash2, TrendingUp, TriangleAlert, Trophy, Wallet, Wrench, type LucideIcon,
@@ -12,7 +12,7 @@ const ICONS = {
   calendar: Calendar, 'calendar-check': CalendarCheck, 'calendar-days': CalendarDays, check: Check, done: CircleCheck,
   clock: Clock, cloud: Cloud, 'cloud-sun': CloudSun, clipboard: ClipboardList, coins: Coins, crown: Crown,
   external: ExternalLink, flag: Flag, flame: Flame, flower: Flower, tulip: Flower2, folder: FolderOpen, frown: Frown,
-  gem: Gem, gift: Gift, graduation: GraduationCap, hand: Hand, heart: Heart, hourglass: Hourglass, house: House,
+  gem: Gem, gift: Gift, graduation: GraduationCap, hand: Hand, headphones: Headphones, map: MapIcon, heart: Heart, hourglass: Hourglass, house: House,
   image: Image, languages: Languages, laptop: Laptop, idea: Lightbulb, link: Link, lock: Lock, medal: Medal, meh: Meh,
   message: MessageCircle, love: MessageCircleHeart, mic: Mic, moon: Moon, notebook: NotebookPen, clip: Paperclip,
   party: PartyPopper, pause: Pause, pen: PenLine, pencil: Pencil, piggy: PiggyBank, play: Play, puzzle: Puzzle,

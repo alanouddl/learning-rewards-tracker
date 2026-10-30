@@ -5,6 +5,7 @@ import { useData } from '../lib/store';
 import { addDays, fmtDate, todayStr } from '../lib/dates';
 import { minutesOn, planFor } from '../lib/plan';
 import { celebrate } from '../lib/celebrate';
+import { currentStage, isEnglishCourse } from '../lib/english';
 import { Field, useToast } from './ui';
 
 export function CheckinForm({ initialMinutes, initialCourse, source, onDone }: {
@@ -22,6 +23,10 @@ export function CheckinForm({ initialMinutes, initialCourse, source, onDone }: {
   const [help, setHelp] = useState('');
   const [links, setLinks] = useState('');
   const [files, setFiles] = useState<File[]>([]);
+  const [lessonId, setLessonId] = useState('');
+  const [words, setWords] = useState('');
+  const [sentence, setSentence] = useState('');
+  const [notUnderstood, setNotUnderstood] = useState('');
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<null | { metGoal: boolean }>(null);
 
@@ -47,6 +52,10 @@ export function CheckinForm({ initialMinutes, initialCourse, source, onDone }: {
       p_finished: finished, p_learned: learned, p_difficulty: difficulty, p_help: help,
       p_links: linkList, p_files: paths,
     });
+    if (!error && english && (lessonId || words.trim() || sentence.trim() || notUnderstood.trim())) {
+      const r = await supabase.rpc('english_attach_checkin', { p_checkin: data.id, p_lesson: lessonId || null, p_words: words, p_sentence: sentence, p_not_understood: notUnderstood });
+      if (r.error) toast(friendlyError(r.error), 'err');
+    }
     setBusy(false);
     if (error) return toast(friendlyError(error), 'err');
     const metGoal = data.target > 0 && data.total >= data.target;
@@ -69,6 +78,11 @@ export function CheckinForm({ initialMinutes, initialCourse, source, onDone }: {
   }
 
   const target = planFor(date, d.schedule, d.planChanges).minutes;
+  const english = isEnglishCourse(d, course);
+  const stage = currentStage(d);
+  const stageLessons = d.english.lessons.filter((l) => l.stage_id === stage?.id && (!l.done_at || l.id === lessonId));
+  const sortedLessons = [...stageLessons].sort((a, b) => Number(b.course_id === course) - Number(a.course_id === course));
+  const beginner = (stage?.id ?? 1) === 1;
   const already = minutesOn(date, d.checkins);
   const dates = Array.from({ length: 8 }, (_, i) => addDays(today, -i));
 
@@ -90,6 +104,26 @@ export function CheckinForm({ initialMinutes, initialCourse, source, onDone }: {
           {active.map((c) => <option key={c.id} value={c.id}>{c.title}</option>)}
         </select>
       </Field>
+      {english && (
+        <div className="space-y-3 rounded-2xl bg-sky-50 p-3">
+          <p className="text-sm font-bold text-sky-400"><I n="languages" size={15} /> أسئلة الإنجليزي{stage ? ` • ${stage.name_ar}` : ''}</p>
+          <Field label="وش الدرس اللي خلصتيه اليوم؟">
+            <select className="input" value={lessonId} onChange={(e) => setLessonId(e.target.value)}>
+              <option value="">— درس من قائمة التشغيل (اكتبيه تحت) —</option>
+              {sortedLessons.map((l) => <option key={l.id} value={l.id}>{l.title}</option>)}
+            </select>
+          </Field>
+          <Field label="اكتبي 3 كلمات جديدة تعلمتيها" hint={beginner ? 'تقدرين تكتبين معناها بالعربي' : undefined}>
+            <input className="input" value={words} onChange={(e) => setWords(e.target.value)} placeholder="apple = تفاحة، book = كتاب، cat = قطة" />
+          </Field>
+          <Field label="اكتبي جملة إنجليزية باستخدام اللي تعلمتيه" hint={beginner ? 'جملة قصيرة تكفي، مثل: I am happy.' : 'حاولي تكتبين جملة كاملة بنفسك'}>
+            <input className="input ltr text-left" value={sentence} onChange={(e) => setSentence(e.target.value)} placeholder={beginner ? 'I am …' : 'I go to school every day.'} />
+          </Field>
+          <Field label="وش الشيء اللي ما فهمتيه؟ (اختياري)">
+            <input className="input" value={notUnderstood} onChange={(e) => setNotUnderstood(e.target.value)} placeholder="اكتبي بالعربي عادي" />
+          </Field>
+        </div>
+      )}
       <Field label="٢. وش خلّصتي اليوم؟">
         <textarea className="input min-h-20" value={finished} onChange={(e) => setFinished(e.target.value)} placeholder="مثال: خلصت درس Present Simple وحليت التمارين" required />
       </Field>

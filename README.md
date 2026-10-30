@@ -18,7 +18,8 @@ websites. A guardian reviews her progress and approves rewards toward a **3,000 
 1. Create a free account at <https://supabase.com> → **New project**. Pick a strong DB password and a region close to you (e.g. Frankfurt / Mumbai).
 2. Open **SQL Editor → New query**, paste the full contents of [`supabase/schema.sql`](supabase/schema.sql) → **Run**.
 3. New query again: paste [`supabase/seed.sql`](supabase/seed.sql) → **Run**. This loads the suggested courses, milestones, budget split and weekly schedule.
-4. **Authentication → Sign In / Providers → Email**: turn **off** "Allow new users to sign up". Turn off "Confirm email" too if you plan to use username-style logins (see step B).
+4. New query again: paste [`supabase/english.sql`](supabase/english.sql) → **Run**. This adds the four-stage ZAmericanEnglish journey (see below).
+5. **Authentication → Sign In / Providers → Email**: turn **off** "Allow new users to sign up". Turn off "Confirm email" too if you plan to use username-style logins (see step B).
 
 ### B. Create the two accounts (order matters)
 In **Authentication → Users → Add user → Create new user** (tick **Auto Confirm User**):
@@ -85,7 +86,22 @@ Notifications (🔔) appear when she submits a check-in, asks for help, claims a
 
 ---
 
-## 4. How rewards are kept honest
+## 4. English journey (رحلتي مع الإنجليزية)
+Four sequential stages built on the free **ZAmericanEnglish** YouTube courses by Ibrahim Adel. The app hosts no lessons; it organises them, tracks progress, collects evidence and pays the four existing 300 SAR English milestones, so English stays at 1,200 SAR.
+
+| Stage | Courses (Level 1) | Suggested length |
+|---|---|---|
+| 1. الأساسيات والقراءة والنطق | English From Zero, Reading, Phonetics | 6–8 weeks |
+| 2. القواعد وتكوين الجمل | Grammar, plus English From Zero and Reading review | 6–8 weeks |
+| 3. الاستماع والمحادثة | Listening, Conversation, plus Grammar review | 8–10 weeks |
+| 4. تحدي الإنجليزية النهائي | Review of everything above; no Level 2 | 6–10 weeks |
+
+- **Student** (الإنجليزي tab): sees the roadmap and the current stage, with its objectives, courses, lessons, weekly plan, assessment checklist and skills. Her check-in on an English course adds four questions: the lesson, 3 new words, one sentence, and what she didn't understand. Arabic is fine. When she is ready, she taps **أنا جاهزة للتقييم**.
+- **Guardian** (الإنجليزي tab): scores each assessment item as passed, needs improvement or not reviewed, adds a score and feedback, and then either passes the stage (which approves its 300 SAR and unlocks the next stage) or asks for more practice. The guardian also edits stages, objectives, assessment items, stage courses and weekly plans (**تطبيق على الجدول** copies a plan into the weekly schedule), manages playlist links and lessons (including adding many at once), and rates the 8 skills over time, starting from a baseline.
+- **Links:** the playlist URLs could not be verified automatically. The confirmed intro video is stored, and each course points to the channel's Playlists page with a **needs verification** badge until the guardian pastes the real playlist link.
+- Finishing the journey is not an official CEFR certificate. The guardian decides when she is ready for the next level.
+
+## 5. How rewards are kept honest
 - **One budget.** Daily, weekly, milestone and bonus rewards all draw from the same 3,000 SAR. The database refuses any change where *pending + approved + paid* would go over it, or where area allocations would add up to more than it.
 - **Shared consistency pool.** Each area reserves a part of its budget for daily consistency. Those parts form one shared pool that pays the 5 SAR/day and 10 SAR/week rewards. The rest of each area pays its milestones. Default split:
 
@@ -104,15 +120,16 @@ Notifications (🔔) appear when she submits a check-in, asks for help, claims a
 - **Immutable ledger.** Reward amounts cannot be edited or deleted. Every status change (created → approved → paid, or rejected) is added to `reward_events`, which nobody can modify. You can see it in **المكافآت → سجل العمليات الثابت**.
 - **Role-based security.** Every table uses row-level security. Money changes happen only through server functions that check you are the guardian. The student cannot approve, pay, edit amounts or change settings, even by calling the API directly.
 
-## 5. Privacy
+## 6. Privacy
 Two accounts only. No public profiles, chat, social feed or leaderboard. No ads, analytics or trackers. Pages carry `noindex`. Evidence screenshots go to a **private** storage bucket and open only through short-lived signed links. The app stores only a display name, emails and study entries.
 
-## 6. Free-tier limitations
+## 7. Free-tier limitations
 - **Supabase free:** a project is **paused after 7 days without any activity**. Normal daily use keeps it awake. If it pauses, click "Restore" in the dashboard; no data is lost. Limits: 500 MB database and 1 GB file storage, far more than this app needs. Free projects have no automatic backups, so download a backup occasionally (Database → Backups, or `pg_dump`).
 - **GitHub Pages:** the site is public on the internet, but it shows nothing without logging in. Free Pages needs a **public** repository (no secrets are stored in it). Use Netlify or Vercel if you want the repo private.
 - **Notifications are in-app only** (no SMS, push or email). They appear within about 15 seconds while the app is open.
 - **Course progress is self-reported.** The app cannot see activity on the external course websites.
 
-## 7. Tests
+## 8. Tests
+- `tests/english.test.mjs`: 38 checks for the English journey (stages, lessons, check-in answers, assessments, rewards, schedule, permissions).
 - `tests/api.test.mjs`: 67 checks covering roles, row-level security, the budget cap, no double counting, the ledger, the timer and notifications. **Run it only on an empty test project.** It creates accounts.
 - The full workflow was also run in a real browser at phone and desktop sizes: guardian adds course → student opens course → studies with timer → submits check-in → guardian reviews and approves → both dashboards update.

@@ -13,6 +13,8 @@ import StudentWeek from './pages/student/Week';
 import StudentCourses from './pages/student/Courses';
 import StudentRewards from './pages/student/Rewards';
 import StudentHistory from './pages/student/History';
+import StudentEnglish from './pages/student/English';
+import GuardianEnglish from './pages/guardian/English';
 import GuardianHome from './pages/guardian/Home';
 import GuardianReview from './pages/guardian/Review';
 import GuardianCourses from './pages/guardian/Courses';
@@ -67,6 +69,7 @@ function Authed() {
             <Route path="/g/schedule" element={<GuardianSchedule />} />
             <Route path="/g/rewards" element={<GuardianRewards />} />
             <Route path="/g/analytics" element={<GuardianAnalytics />} />
+            <Route path="/g/english" element={<GuardianEnglish />} />
             <Route path="/g/settings" element={<GuardianSettings />} />
             <Route path="*" element={<Navigate to="/g" replace />} />
           </>
@@ -77,6 +80,7 @@ function Authed() {
             <Route path="/courses" element={<StudentCourses />} />
             <Route path="/rewards" element={<StudentRewards />} />
             <Route path="/history" element={<StudentHistory />} />
+            <Route path="/english" element={<StudentEnglish />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </>
         )}

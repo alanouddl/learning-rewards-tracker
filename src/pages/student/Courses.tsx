@@ -1,5 +1,6 @@
 import { I, IconBubble, categoryIcon, categoryTone } from '../../components/Icon';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { supabase, friendlyError } from '../../lib/supabase';
 import { useData } from '../../lib/store';
 import { fmtDate } from '../../lib/dates';
@@ -19,6 +20,7 @@ const STATUS_CHIP: Record<Course['status'], string> = {
 export default function StudentCourses() {
   const d = useData();
   const courses = d.courses.filter((c) => !c.archived);
+  const stageMs = new Set(d.english.stages.map((x) => x.milestone_id));
   const [edit, setEdit] = useState<Course | null>(null);
   const [claim, setClaim] = useState<Milestone | null>(null);
 
@@ -65,16 +67,18 @@ export default function StudentCourses() {
                       <span>{m.status === 'approved' ? '' : m.status === 'awaiting' ? '' : '⭕'}</span>
                       <span className="ltr min-w-0 flex-1 truncate text-right">{m.title}</span>
                       {m.reward > 0 && <span className="shrink-0 text-xs text-plum-soft">{sar(m.reward)}</span>}
-                      {m.status === 'open' && c.status !== 'completed' && (
+                      {m.status === 'open' && c.status !== 'completed' && !stageMs.has(m.id) && (
                         <button className="btn-soft shrink-0 !px-2 !py-1 text-xs" onClick={() => setClaim(m)}>خلصتها!</button>
                       )}
                     </li>
                   ))}
                 </ul>
               )}
+              {!c.link_verified && <p className="mt-2 text-[11px] text-[#9a7400]">الرابط بانتظار تأكيد ولي الأمر</p>}
               <div className="mt-auto flex flex-wrap gap-2 pt-4">
+                {c.kind === 'journey' && <Link to="/english" className="btn-primary">رحلة الإنجليزية <I n="map" size={16} /></Link>}
                 <OpenCourseButton course={c} />
-                {c.status !== 'completed' && <button className="btn-soft" onClick={() => setEdit(c)}><I n="trend" /> تحديث التقدم</button>}
+                {c.status !== 'completed' && c.kind !== 'journey' && <button className="btn-soft" onClick={() => setEdit(c)}><I n="trend" /> تحديث التقدم</button>}
               </div>
             </Card>
           );

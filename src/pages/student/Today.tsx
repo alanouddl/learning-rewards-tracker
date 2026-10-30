@@ -14,6 +14,7 @@ import { TaskList } from '../../components/TaskList';
 import { OpenCourseButton } from '../../components/OpenCourse';
 import { WeekCalendar } from '../../components/WeekCalendar';
 import { Sparkle } from '../../components/Decor';
+import { EnglishTodayCard } from '../../components/EnglishToday';
 import { SavingsJar } from '../../components/SavingsJar';
 
 export function useMoneyCelebration() {
@@ -79,6 +80,8 @@ export default function StudentToday() {
           <SavingsJar value={s.earned / s.total_budget} pending={s.pending / s.total_budget} size={150} />
         </Link>
       </section>
+
+      <EnglishTodayCard courseId={plan.course_id} minutes={plan.minutes} task={plan.task_text} />
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
         {/* today's goal */}

@@ -59,7 +59,7 @@ const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Riyadh' }
 const add = (d, n) => { const x = new Date(d + 'T00:00:00Z'); x.setUTCDate(x.getUTCDate() + n); return x.toISOString().slice(0, 10); };
 const dow = new Date(today + 'T00:00:00Z').getUTCDay();
 const sunday = add(today, -dow);
-const en = (await s.from('courses').select('*').eq('title', 'Beginner English (Teens)').single()).data;
+const en = (await s.from('courses').select('*').eq('title', 'BBC Learning English').single()).data;
 const submit = (date, minutes) => s.rpc('submit_checkin', { p_study_date: date, p_course: en.id, p_minutes: minutes, p_source: 'timer', p_finished: 'Lesson 1', p_learned: 'I am, you are', p_difficulty: 'easy', p_help: '', p_links: ['https://example.org/shot.png'], p_files: [] });
 let r = await submit(sunday, 25);
 ok(!r.error && r.data.daily_reward_id, 'checkin creates pending daily reward ' + (r.error?.message || ''));

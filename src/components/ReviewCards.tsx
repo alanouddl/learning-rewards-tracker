@@ -1,5 +1,6 @@
 import { I } from './Icon';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { supabase, friendlyError } from '../lib/supabase';
 import { useData } from '../lib/store';
 import { fmtDate, fmtDateTime } from '../lib/dates';
@@ -47,6 +48,15 @@ export function CheckinCard({ c }: { c: Checkin }) {
         <div><dt className="text-xs font-semibold text-plum-soft">ماذا أنجزت</dt><dd className="whitespace-pre-wrap">{c.finished}</dd></div>
         {c.learned && <div><dt className="text-xs font-semibold text-plum-soft">ماذا تعلمت</dt><dd className="whitespace-pre-wrap">{c.learned}</dd></div>}
         <div><dt className="text-xs font-semibold text-plum-soft">الصعوبة</dt><dd>{DIFFICULTY[c.difficulty]}</dd></div>
+        {(c.new_words || c.english_sentence || c.not_understood || c.english_lesson_id) && (
+          <div className="space-y-1 rounded-xl bg-sky-50 p-2.5">
+            <dt className="text-xs font-bold text-sky-400">إجابات الإنجليزي</dt>
+            {c.english_lesson_id && <dd><span className="text-plum-soft">الدرس:</span> <span className="ltr">{d.english.lessons.find((l) => l.id === c.english_lesson_id)?.title}</span></dd>}
+            {c.new_words && <dd><span className="text-plum-soft">كلمات جديدة:</span> <span dir="auto">{c.new_words}</span></dd>}
+            {c.english_sentence && <dd><span className="text-plum-soft">جملتها:</span> <span className="ltr">{c.english_sentence}</span></dd>}
+            {c.not_understood && <dd className="rounded-lg bg-peach-100 p-1.5"><span className="text-plum-soft">ما فهمته:</span> {c.not_understood}</dd>}
+          </div>
+        )}
         {c.help_needed && <div className="rounded-xl bg-peach-100 p-2"><dt className="text-xs font-semibold"><I n="hand" /> تحتاج مساعدة</dt><dd>{c.help_needed}</dd></div>}
         {(c.evidence_links.length > 0 || c.evidence_files.length > 0) && (
           <div><dt className="text-xs font-semibold text-plum-soft">الإثبات</dt>
@@ -86,6 +96,9 @@ export function RewardActions({ r }: { r: Reward }) {
     setBusy(false);
     if (error) return toast(friendlyError(error), 'err');
     toast(status === 'approved' ? 'تمت الموافقة' : status === 'paid' ? 'تم تسجيل التسليم' : 'تم الرفض'); d.refresh();
+  }
+  if (r.status === 'pending' && r.milestone_id && d.english.stages.some((x) => x.milestone_id === r.milestone_id)) {
+    return <Link to="/g/english" className="btn-soft !px-3 !py-1.5 text-sm">قيّميها من صفحة الإنجليزي</Link>;
   }
   return (
     <div className="flex flex-wrap gap-1.5">
